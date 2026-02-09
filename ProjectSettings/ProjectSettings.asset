@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 8da6032854e647149ae9780ac3420ce1
+  productGUID: a5ba532844f586a4fa1fa9cbd1ac2c03
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: offroad sim
+  productName: offroad sim game
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -842,14 +842,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: offroad sim
+  metroPackageName: offroad sim game
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: offroad sim
+  metroApplicationDescription: offroad sim game
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -920,10 +920,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: d8999427-78e4-4f8a-9233-d9cb1a7c084e
+  cloudProjectId: 27593df2-9c5f-4f80-8373-88d824cec719
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: offroad sim
+  projectName: offroad sim game
   organizationId: michael-kronfeld
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
