@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c28df46729d0d408fc8ef5ffb7eb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookPoints:
+  lookPoints:
     forward: {fileID: 944319298}
     right: {fileID: 990585476}
     left: {fileID: 168209351}
@@ -3714,7 +3714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showTelemetry: 1
-  drawTireForces: 1
   debugTextColor: {r: 0, g: 1, b: 0, a: 1}
   fontSize: 12
 --- !u!23 &9186004808599426486

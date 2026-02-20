@@ -2,7 +2,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 [System.Serializable]
-public struct lookPoints
+public struct LookPoints
 {
     public Transform forward;
     public Transform right;
@@ -13,7 +13,7 @@ public struct lookPoints
 
 public class InteriorCameraController : MonoBehaviour
 {
-    [SerializeField] private lookPoints LookPoints;
+    [SerializeField] private LookPoints lookPoints;
     [SerializeField] private CinemachineCamera interiorCam;
     [SerializeField] private Transform camTarget;
 
@@ -26,30 +26,35 @@ public class InteriorCameraController : MonoBehaviour
         else
             Debug.LogWarning("no interior camera found");
 
-            SetTarget(LookPoints.forward);
+            SetTarget(lookPoints.forward);
     }
 
     public void LookForward()
     {
-        SetTarget(LookPoints.forward);
+        SetTarget(lookPoints.forward);
+    }
+
+    public bool IsLookingForward()
+    {
+        return currentTarget == lookPoints.forward;
     }
 
     public void LookLeft()
     {
-        Transform nextTarget = (currentTarget == LookPoints.left) ? LookPoints.forward : LookPoints.left;
+        Transform nextTarget = (currentTarget == lookPoints.left) ? lookPoints.forward : lookPoints.left;
         SetTarget(nextTarget);
     }
 
     public void LookRight()
     {
-        Transform nextTarget = (currentTarget == LookPoints.right) ? LookPoints.forward : LookPoints.right;
+        Transform nextTarget = (currentTarget == lookPoints.right) ? lookPoints.forward : lookPoints.right;
         SetTarget(nextTarget);
     }
 
     private void SetTarget(Transform newPoint)
     {
         if (newPoint == null) return;
-        Debug.Log($"Target set to {newPoint.name} by {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}");
+        //Debug.Log($"Target set to {newPoint.name} by {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}");
 
         currentTarget = newPoint;
         camTarget.position = newPoint.position;

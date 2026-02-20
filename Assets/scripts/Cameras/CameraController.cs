@@ -50,7 +50,6 @@ public class CameraController : MonoBehaviour
         if (InputManager.Instance != null)
         {
             InputManager.Instance.OnCycleCameraEvent += CycleCamera;
-            InputManager.Instance.OnCycleInteriorCameraEvent += CycleInteriorMode;
             InputManager.Instance.OnCameraLeftEvent += CameraLeft;
             InputManager.Instance.OnCameraRightEvent += CameraRight;
         }
@@ -61,21 +60,9 @@ public class CameraController : MonoBehaviour
         if (InputManager.Instance != null)
         {
             InputManager.Instance.OnCycleCameraEvent -= CycleCamera;
-            InputManager.Instance.OnCycleInteriorCameraEvent -= CycleInteriorMode;
             InputManager.Instance.OnCameraLeftEvent -= CameraLeft;
             InputManager.Instance.OnCameraRightEvent -= CameraRight;
         }
-    }
-
-    private void CycleInteriorMode()
-    {
-        bool isInteriorCamActive = cameras.interiorCam.Priority > 10;
-
-        if (!isInteriorCamActive)
-            SetCamera(cameras.interiorCam);
-
-        interiorCameraController.LookForward();
-        currentExteriorIndex = 1;
     }
 
     private void SetCamera(CinemachineCamera camToActivate)
@@ -115,7 +102,7 @@ public class CameraController : MonoBehaviour
     {
         if (cameras.interiorCam.Priority == 20)
         {
-            SetCamera(exteriorCycleList[currentExteriorIndex]);
+            CycleInteriorCamera();
             return;
         }
 
@@ -126,6 +113,23 @@ public class CameraController : MonoBehaviour
             flippedPanning = !flippedPanning;
 
         SetCamera(exteriorCycleList[currentExteriorIndex]);
+    }
+
+    private void CycleInteriorCamera()
+    {
+        bool isInteriorCamActive = cameras.interiorCam.Priority > 10;
+
+        if (!isInteriorCamActive)
+        {
+            SetCamera(cameras.interiorCam);
+        }
+        else if (interiorCameraController.IsLookingForward())
+        {
+            SetCamera(cameras.followCam);
+            currentExteriorIndex = 1;
+        }
+
+        interiorCameraController.LookForward();
     }
 
     public void SetInteriorCameraController(InteriorCameraController controller)

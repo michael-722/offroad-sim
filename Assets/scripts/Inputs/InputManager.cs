@@ -20,7 +20,6 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
     public event Action OnPauseEvent;
 
     public event Action OnCycleCameraEvent;
-    public event Action OnCycleInteriorCameraEvent;
     public event Action OnCameraLeftEvent;
     public event Action OnCameraRightEvent;
 
@@ -71,11 +70,16 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
         float steeringValue = context.ReadValue<float>();
         OnSteeringEvent?.Invoke(steeringValue);
     }
-
-    public void OnCycleCamera(InputAction.CallbackContext context)
+    public void OnGearUp(InputAction.CallbackContext context)
     {
         if (context.performed)
-            OnCycleCameraEvent?.Invoke();
+            OnGearUpEvent?.Invoke();
+    }
+
+    public void OnGearDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            OnGearDownEvent?.Invoke();
     }
 
     public void OnReset(InputAction.CallbackContext context)
@@ -90,10 +94,10 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
             OnPauseEvent?.Invoke();
     }
 
-    public void OnCycleInteriorCamera(InputAction.CallbackContext context)
+    public void OnCycleCamera(InputAction.CallbackContext context)
     {
         if (context.performed)
-            OnCycleInteriorCameraEvent?.Invoke();
+            OnCycleCameraEvent?.Invoke();
     }
 
     public void OnCameraLeft(InputAction.CallbackContext context)
@@ -106,17 +110,5 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
     {
         if (context.started)
             OnCameraRightEvent?.Invoke();
-    }
-
-    public void OnGearUp(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            OnGearUpEvent?.Invoke();
-    }
-
-    public void OnGearDown(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            OnGearDownEvent?.Invoke();
     }
 }

@@ -62,7 +62,7 @@ public class EngineSimulator : MonoBehaviour
 
         float wheelTorque = engineTorque * totalRatio * gasInput;
 
-        Debug.Log($"RPM: {CurrentRPM:F0}, Torque: {engineTorque:F1} Nm, HP: {CurrentHP:F1}, Wheel Torque: {wheelTorque:F1} Nm"); 
+        //Debug.Log($"RPM: {CurrentRPM:F0}, Torque: {engineTorque:F1} Nm, HP: {CurrentHP:F1}, Wheel Torque: {wheelTorque:F1} Nm"); 
         return wheelTorque;
     }
 

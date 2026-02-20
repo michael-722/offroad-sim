@@ -129,15 +129,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""CycleInteriorCamera"",
-                    ""type"": ""Button"",
-                    ""id"": ""ce591712-205f-4653-aa08-e97cb73dd565"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""CameraLeft"",
                     ""type"": ""Button"",
                     ""id"": ""e6e53b18-4490-484e-93e2-ab07d9265380"",
@@ -284,7 +275,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e67eb9f2-a390-41e6-8e51-903db100905c"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -300,28 +291,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""CycleCamera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""15488ce8-0bfa-4862-bf8f-00dfaa189575"",
-                    ""path"": ""<Keyboard>/z"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""CycleInteriorCamera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e503934e-715f-47d5-8d38-b46ad3aa9408"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""CycleInteriorCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1045,7 +1014,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         m_Player_Brake = m_Player.FindAction("Brake", throwIfNotFound: true);
         m_Player_Steering = m_Player.FindAction("Steering", throwIfNotFound: true);
         m_Player_CycleCamera = m_Player.FindAction("CycleCamera", throwIfNotFound: true);
-        m_Player_CycleInteriorCamera = m_Player.FindAction("CycleInteriorCamera", throwIfNotFound: true);
         m_Player_CameraLeft = m_Player.FindAction("CameraLeft", throwIfNotFound: true);
         m_Player_CameraRight = m_Player.FindAction("CameraRight", throwIfNotFound: true);
         m_Player_Reset = m_Player.FindAction("Reset", throwIfNotFound: true);
@@ -1149,7 +1117,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Brake;
     private readonly InputAction m_Player_Steering;
     private readonly InputAction m_Player_CycleCamera;
-    private readonly InputAction m_Player_CycleInteriorCamera;
     private readonly InputAction m_Player_CameraLeft;
     private readonly InputAction m_Player_CameraRight;
     private readonly InputAction m_Player_Reset;
@@ -1183,10 +1150,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/CycleCamera".
         /// </summary>
         public InputAction @CycleCamera => m_Wrapper.m_Player_CycleCamera;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/CycleInteriorCamera".
-        /// </summary>
-        public InputAction @CycleInteriorCamera => m_Wrapper.m_Player_CycleInteriorCamera;
         /// <summary>
         /// Provides access to the underlying input action "Player/CameraLeft".
         /// </summary>
@@ -1249,9 +1212,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @CycleCamera.started += instance.OnCycleCamera;
             @CycleCamera.performed += instance.OnCycleCamera;
             @CycleCamera.canceled += instance.OnCycleCamera;
-            @CycleInteriorCamera.started += instance.OnCycleInteriorCamera;
-            @CycleInteriorCamera.performed += instance.OnCycleInteriorCamera;
-            @CycleInteriorCamera.canceled += instance.OnCycleInteriorCamera;
             @CameraLeft.started += instance.OnCameraLeft;
             @CameraLeft.performed += instance.OnCameraLeft;
             @CameraLeft.canceled += instance.OnCameraLeft;
@@ -1293,9 +1253,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @CycleCamera.started -= instance.OnCycleCamera;
             @CycleCamera.performed -= instance.OnCycleCamera;
             @CycleCamera.canceled -= instance.OnCycleCamera;
-            @CycleInteriorCamera.started -= instance.OnCycleInteriorCamera;
-            @CycleInteriorCamera.performed -= instance.OnCycleInteriorCamera;
-            @CycleInteriorCamera.canceled -= instance.OnCycleInteriorCamera;
             @CameraLeft.started -= instance.OnCameraLeft;
             @CameraLeft.performed -= instance.OnCameraLeft;
             @CameraLeft.canceled -= instance.OnCameraLeft;
@@ -1642,13 +1599,6 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCycleCamera(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "CycleInteriorCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCycleInteriorCamera(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "CameraLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
