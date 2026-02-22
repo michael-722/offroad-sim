@@ -6,6 +6,7 @@ public class EngineSimulator : MonoBehaviour
     [SerializeField] private float maxTorque = 410f;
     [SerializeField] private float idleRPM = 800f;
     [SerializeField] private float redlineRPM = 7000f;
+    [SerializeField][Range(0, 1000)] float revLimitVariance = 400f;
     [SerializeField] private AnimationCurve normalizedTorqueCurve = AnimationCurve.Linear(0, 0.8f, 1, 1f);
     [SerializeField] private float engineInertia = 0.5f;
     [SerializeField] private float engineFriction = 0.1f;
@@ -30,40 +31,47 @@ public class EngineSimulator : MonoBehaviour
 
     public float CalculateTorque(float gasInput, float wheelRPM)
     {
+
         float gearRatio = gearRatios[Mathf.Clamp(currentGear - 1, 0, 9)];
         float totalRatio = gearRatio * finalDriveRatio;
 
-        if (currentGear == -1)
-        {
-            CurrentRPM = Mathf.Lerp(CurrentRPM, idleRPM, Time.fixedDeltaTime * clutchStrength);
-            return 0;
-        }
-
-        if (currentGear == -2)
-            totalRatio = reverseRatio;
-
+        //rmp
         float targetRPM = Mathf.Abs(wheelRPM * totalRatio);
 
         if (targetRPM > redlineRPM)
         {
             gasInput = 0;
-            CurrentRPM = redlineRPM;
+
+            CurrentRPM = redlineRPM + Random.Range(-revLimitVariance, revLimitVariance);
+
             return -engineFriction * totalRatio * (targetRPM / redlineRPM);
         }
         else
-        {
             CurrentRPM = Mathf.Lerp(CurrentRPM, Mathf.Clamp(targetRPM, idleRPM, redlineRPM), Time.fixedDeltaTime * 10f);
-        }
 
+        //torque and hp
         float rpmPercent = Mathf.InverseLerp(0, redlineRPM, CurrentRPM);
         float engineTorque = normalizedTorqueCurve.Evaluate(rpmPercent) * maxTorque;
-
         CurrentHP = (engineTorque * CurrentRPM) / 9549f;
-
         float wheelTorque = engineTorque * totalRatio * gasInput;
 
         //Debug.Log($"RPM: {CurrentRPM:F0}, Torque: {engineTorque:F1} Nm, HP: {CurrentHP:F1}, Wheel Torque: {wheelTorque:F1} Nm"); 
-        return wheelTorque;
+
+        //neutral
+        if (currentGear == -1)
+        {
+            float revSpeed = gasInput * 7000f;
+            CurrentRPM += revSpeed * Time.fixedDeltaTime * 10;
+            CurrentRPM = Mathf.Clamp(CurrentRPM, idleRPM, redlineRPM);
+
+            return 0;
+        }
+
+        //reverse or normal
+        if (currentGear == -2)
+            return -wheelTorque / 1.5f;
+        else
+            return wheelTorque;
     }
 
     public void ShiftUp() { if (currentGear < gearRatios.Length) currentGear++; }
