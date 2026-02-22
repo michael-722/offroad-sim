@@ -17,9 +17,6 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] private CameraGroup cameras;
 
-    private int currentExteriorIndex = 1;
-    private bool flippedPanning = false;
-    private List<CinemachineCamera> exteriorCycleList;
     private InteriorCameraController interiorCameraController;
 
     private void Awake()
@@ -38,13 +35,6 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        exteriorCycleList = new List<CinemachineCamera>
-        {
-            cameras.leftCam,
-            cameras.followCam,
-            cameras.rightCam
-        };
-
         SetCamera(cameras.followCam);
 
         if (InputManager.Instance != null)
@@ -81,10 +71,7 @@ public class CameraController : MonoBehaviour
         if (cameras.interiorCam.Priority == 20)
             interiorCameraController.LookLeft();
         else
-        {
             SetCamera(cameras.leftCam);
-            currentExteriorIndex = 0;
-        }
     }
 
     private void CameraRight()
@@ -92,27 +79,18 @@ public class CameraController : MonoBehaviour
         if (cameras.interiorCam.Priority == 20)
             interiorCameraController.LookRight();
         else
-        { 
             SetCamera(cameras.rightCam);
-            currentExteriorIndex = 2;
-        }
     }
 
     private void CycleCamera()
     {
-        if (cameras.interiorCam.Priority == 20)
+        if (cameras.interiorCam.Priority == 20 || cameras.followCam.Priority == 20)
         {
             CycleInteriorCamera();
             return;
         }
 
-        if (flippedPanning) currentExteriorIndex--;
-        else currentExteriorIndex++;
-
-        if (currentExteriorIndex >= exteriorCycleList.Count - 1 || currentExteriorIndex <= 0)
-            flippedPanning = !flippedPanning;
-
-        SetCamera(exteriorCycleList[currentExteriorIndex]);
+        SetCamera(cameras.followCam);
     }
 
     private void CycleInteriorCamera()
@@ -120,14 +98,9 @@ public class CameraController : MonoBehaviour
         bool isInteriorCamActive = cameras.interiorCam.Priority > 10;
 
         if (!isInteriorCamActive)
-        {
             SetCamera(cameras.interiorCam);
-        }
         else if (interiorCameraController.IsLookingForward())
-        {
             SetCamera(cameras.followCam);
-            currentExteriorIndex = 1;
-        }
 
         interiorCameraController.LookForward();
     }
