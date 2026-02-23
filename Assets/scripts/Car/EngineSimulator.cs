@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EngineSimulator : MonoBehaviour
 {
+    //gear shifiting - limit power via clutch 
+
     [Header("engine physics")]
     [SerializeField] private float maxTorque = 410f;
     [SerializeField] private float idleRPM = 800f;
@@ -56,7 +58,12 @@ public class EngineSimulator : MonoBehaviour
         float rpmPercent = Mathf.InverseLerp(0, redlineRPM, CurrentRPM);
         engineTorque = normalizedTorqueCurve.Evaluate(rpmPercent) * maxTorque;
         CurrentHP = (engineTorque * CurrentRPM) / 9549f;
-        wheelTorque = engineTorque * totalRatio * gasInput;
+
+        Debug.Log(engineTorque);
+        //wheelTorque = (CurrentHP * 5252) / CurrentRPM; <===== correct calc for torque 
+
+        wheelTorque = engineTorque * totalRatio / engineFriction;
+        //wheelTorque = engineTorque * totalRatio * gasInput;
 
         //Debug.Log($"RPM: {CurrentRPM:F0}, Torque: {engineTorque:F1} Nm, HP: {CurrentHP:F1}, Wheel Torque: {wheelTorque:F1} Nm"); 
 

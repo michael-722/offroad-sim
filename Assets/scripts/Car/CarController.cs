@@ -29,6 +29,8 @@ public class CarController : MonoBehaviour
     [HideInInspector] public float brakeInput;
     [HideInInspector] public float steerInput;
 
+    //hp 200 - 400
+
     [Serializable]
     public struct WheelData
     {
@@ -36,6 +38,7 @@ public class CarController : MonoBehaviour
         public Transform visual;
         public bool isSteerable;
         public bool isMotorized;
+        public bool isFrontWheel;
     }
 
     private void Start()
@@ -56,8 +59,6 @@ public class CarController : MonoBehaviour
         float wheelRPM = GetAverageMotorRPM();
         float torque = -engine.CalculateTorque(gasInput, wheelRPM);
 
-        Debug.Log(rb.linearVelocity.z);
-
         if (gasInput == 0 && rb.linearVelocity.z < 0) torque = engine.ApplyEngineBreaking();
         if (tcsEnabled) ApplyTractionControl();
 
@@ -69,7 +70,10 @@ public class CarController : MonoBehaviour
                 wheel.collider.steerAngle = steerInput * maxSteerAngle;
 
             if (wheel.isMotorized)
+            {
                 wheel.collider.motorTorque = torque / numberOfWheels;
+                Debug.Log(torque /numberOfWheels);
+            }
 
             wheel.collider.brakeTorque = brakeInput * brakeForce;
             wheel.collider.forceAppPointDistance = 0.1f;
