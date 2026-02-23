@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
@@ -14,8 +15,9 @@ public class CarController : MonoBehaviour
 
     [Header("Traction Control")]
     [SerializeField] bool tcsEnabled = true;
-    [Range(0, 1)] [SerializeField] float slipLimit = 0.35f;
+    [Range(0, 1)][SerializeField] float slipLimit = 0.35f;
     private float tcsTorqueFactor = 1f;//1 = full power 0 = no power
+    [SerializeField] private float maxSlipLimit = 0f;
 
     [Header("surface settings")]
     [SerializeField] float rockStiffness = 1.0f;
@@ -53,8 +55,10 @@ public class CarController : MonoBehaviour
     {
         float wheelRPM = GetAverageMotorRPM();
         float torque = -engine.CalculateTorque(gasInput, wheelRPM);
-        if (gasInput == 0) torque = engine.ApplyEngineBreaking();
 
+        Debug.Log(rb.linearVelocity.z);
+
+        if (gasInput == 0 && rb.linearVelocity.z < 0) torque = engine.ApplyEngineBreaking();
         if (tcsEnabled) ApplyTractionControl();
 
         foreach (var wheel in wheels)
@@ -125,6 +129,27 @@ public class CarController : MonoBehaviour
         }
     }
 
+    private void ApplyTractionControl()
+    {
+        foreach (var wheel in wheels)
+        {
+            if (wheel.isMotorized)
+            {
+                WheelHit hit;
+                if (wheel.collider.GetGroundHit(out hit))
+                {
+                    float currentSlip = Mathf.Abs(hit.forwardSlip);
+                    if (currentSlip > maxSlipLimit) maxSlipLimit = currentSlip;
+                }
+            }
+        }
+
+        if (maxSlipLimit > slipLimit)
+            tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, 1f - Mathf.Clamp01((maxSlipLimit - slipLimit) / 0.5f), Time.fixedDeltaTime * 10f);
+        else
+            tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, 1f, Time.fixedDeltaTime * 2f);
+    }
+
     private int GetMotorizedWheelCount()
     {
         int count = 0;
@@ -134,28 +159,5 @@ public class CarController : MonoBehaviour
                 count++;
         }
         return count;
-    }
-
-    private void ApplyTractionControl()
-    {
-        float maxSlip = 0;
-
-        foreach (var wheel in wheels)
-        {
-            if (wheel.isMotorized)
-            {
-                WheelHit hit;
-                if (wheel.collider.GetGroundHit(out hit))
-                {
-                    float currentSlip = Mathf.Abs(hit.forwardSlip);
-                    if (currentSlip > maxSlip) maxSlip = currentSlip;
-                }
-            }
-        }
-
-        if (maxSlip > slipLimit)
-            tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, 1f - Mathf.Clamp01((maxSlip - slipLimit) / 0.5f), Time.fixedDeltaTime * 10f);
-        else
-            tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, 1f, Time.fixedDeltaTime * 2f);
     }
 }

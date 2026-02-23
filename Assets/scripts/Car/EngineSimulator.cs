@@ -11,7 +11,7 @@ public class EngineSimulator : MonoBehaviour
 
     [Header("engine breaking")]
     [SerializeField] private float engineFriction = 0.1f;
-    [SerializeField] private float clutchStrength = 5f;
+    [SerializeField] private float breakingFactor = 35f;
 
     //ford 10R80 Ratios
     [Header("gearbox")]
@@ -85,6 +85,6 @@ public class EngineSimulator : MonoBehaviour
         float gearRatio = gearRatios[Mathf.Clamp(currentGear - 1, 0, 9)];
         float totalRatio = gearRatio * finalDriveRatio;
 
-        return engineFriction * totalRatio * CurrentRPM / 60;
+        return engineFriction * totalRatio * CurrentRPM / breakingFactor;
     }
 }
