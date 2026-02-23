@@ -430,7 +430,7 @@ MonoBehaviour:
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
-  UpdateMethod: 2
+  UpdateMethod: 0
   BlendUpdateMethod: 1
   LensModeOverride:
     Enabled: 0
@@ -3660,6 +3660,7 @@ MonoBehaviour:
   maxTorque: 410
   idleRPM: 800
   redlineRPM: 7000
+  revLimitVariance: 400
   normalizedTorqueCurve:
     serializedVersion: 2
     m_Curve:

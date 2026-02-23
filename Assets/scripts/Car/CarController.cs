@@ -53,6 +53,7 @@ public class CarController : MonoBehaviour
     {
         float wheelRPM = GetAverageMotorRPM();
         float torque = -engine.CalculateTorque(gasInput, wheelRPM);
+        if (gasInput == 0) torque = engine.ApplyEngineBreaking();
 
         if (tcsEnabled) ApplyTractionControl();
 
@@ -69,8 +70,6 @@ public class CarController : MonoBehaviour
             wheel.collider.brakeTorque = brakeInput * brakeForce;
             wheel.collider.forceAppPointDistance = 0.1f;
         }
-
-        ApplyDrag();
     }
 
     private void Update()
@@ -135,17 +134,6 @@ public class CarController : MonoBehaviour
                 count++;
         }
         return count;
-    }
-
-    private void ApplyDrag()
-    {
-        float airDensity = 1.225f;
-        float dragCd = 0.45f;
-        float area = 3.5f;
-        float speed = rb.linearVelocity.magnitude;
-        float dragForceMagnitude = 0.5f * airDensity * (speed * speed) * dragCd * area;
-
-        rb.AddForce(-rb.linearVelocity.normalized * dragForceMagnitude);
     }
 
     private void ApplyTractionControl()
