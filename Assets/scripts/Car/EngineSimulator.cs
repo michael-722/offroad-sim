@@ -21,12 +21,13 @@ public class EngineSimulator : MonoBehaviour
     [SerializeField] private float reverseRatio = -4.866f;
     [SerializeField] private float finalDriveRatio = 3.73f;
 
-    [Range(-1, 10)]//-1 = reverse 0 = neutral
+    [Range(-1, 10)]//-2 = reverse -1 = neutral
     public int currentGear = 0;
 
     [HideInInspector] public float CurrentRPM;
     [HideInInspector] public float CurrentHP;
 
+    private int currentEngineRPM = 0;
     private float engineTorque;
     private float wheelTorque;
 

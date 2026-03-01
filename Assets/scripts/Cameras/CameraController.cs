@@ -109,4 +109,15 @@ public class CameraController : MonoBehaviour
     {
         interiorCameraController = controller;
     }
+
+    public CinemachineCamera ActiveCamera
+    {
+        get
+        {
+            if (cameras.leftCam.Priority == 20) return cameras.leftCam;
+            if (cameras.rightCam.Priority == 20) return cameras.rightCam;
+            if (cameras.interiorCam.Priority == 20) return cameras.interiorCam;
+            return cameras.followCam;
+        }
+    }
 }
