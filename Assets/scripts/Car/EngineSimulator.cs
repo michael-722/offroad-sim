@@ -1,98 +1,156 @@
 using UnityEngine;
 
+public enum DrivetrainType { RearWheelDrive, FrontWheelDrive, AllWheelDrive }
+
 public class EngineSimulator : MonoBehaviour
 {
-    //gear shifiting - limit power via clutch 
-
-    [Header("engine physics")]
-    [SerializeField] private float maxTorque = 410f;
-    [SerializeField] private float idleRPM = 800f;
+    [Header("engine")]
+    [SerializeField] private float maxTorque = 450f;
     [SerializeField] private float redlineRPM = 7000f;
-    [SerializeField][Range(0, 1000)] float revLimitVariance = 400f;
-    [SerializeField] private AnimationCurve normalizedTorqueCurve = AnimationCurve.Linear(0, 0.8f, 1, 1f);
+    [SerializeField] private float idleRPM = 800f;
+    [SerializeField] private float idleReturnSpeed = 2f;
+    [SerializeField] private float engineInertia = 0.8f;
+    [SerializeField] private float frictionCoeff = 0.004f;
+    [SerializeField] private float engineBrakingCoeff = 0.12f;
 
-    [Header("engine breaking")]
-    [SerializeField] private float engineFriction = 0.1f;
-    [SerializeField] private float breakingFactor = 35f;
-
-    //ford 10R80 Ratios
     [Header("gearbox")]
-    private float[] gearRatios = { 4.696f, 2.985f, 2.146f, 1.769f, 1.520f, 1.275f, 1.000f, 0.854f, 0.689f, 0.636f };
-    [SerializeField] private float reverseRatio = -4.866f;
-    [SerializeField] private float finalDriveRatio = 3.73f;
+    public DrivetrainType drivetrainMode = DrivetrainType.AllWheelDrive;
+    [SerializeField] private float[] gearRatios = { 4.696f, 2.985f, 2.146f, 1.769f, 1.520f, 1.275f, 1.000f, 0.854f, 0.689f, 0.636f };
+    [SerializeField] private float reverseRatio = 4.866f;
+    [SerializeField] private float finalDriveRatio = 4.10f;
+    [SerializeField] private float transmissionEfficiency = 0.97f;
+    [SerializeField] private float rpmSyncThreshold = 300f;
 
-    [Range(-1, 10)]//-2 = reverse -1 = neutral
-    public int currentGear = 0;
+    [Header("drivetrain load")]//need to automatic links 
+    [SerializeField] private float vehicleMass = 2000f;
+    [SerializeField] private float wheelRadius = 0.38f;
+    [SerializeField] private float dragCoeff = 0.45f;
+    [SerializeField] private float rollingResistCoeff = 0.015f;
 
-    [HideInInspector] public float CurrentRPM;
-    [HideInInspector] public float CurrentHP;
+    [Header("clutch")]
+    [SerializeField] private float clutchTorqueCapacity = 700f;
+    [SerializeField] private float clutchEngageSpeed = 4f;
 
-    private int currentEngineRPM = 0;
-    private float engineTorque;
-    private float wheelTorque;
+    [HideInInspector] public int currentGear = 0;
+    [HideInInspector] public float currentRPM;
+    [HideInInspector] public float drivetrainRPM;
 
-    private void Start()
+    private const int NeutralGear = -1;
+    private const int ReverseGear = -2;
+
+    [Range(0f, 1f)] private float clutchEngagement = 0f;
+    private float clutchInput = 1f;
+    private float shiftTimer = 0f;
+    private AnimationCurve torqueCurve;
+
+    void Awake()
     {
-        CurrentRPM = idleRPM;
+        torqueCurve = new AnimationCurve(
+            new Keyframe(0.00f, 0.30f, 0f, 2.0f),
+            new Keyframe(0.15f, 0.70f, 2.0f, 1.2f),
+            new Keyframe(0.40f, 0.95f, 0.8f, 0.4f),
+            new Keyframe(0.65f, 1.00f, 0.1f, -0.3f),
+            new Keyframe(0.80f, 0.92f, -0.6f, -0.8f),
+            new Keyframe(1.00f, 0.65f, -1.2f, 0f)
+        );
     }
 
-    public float CalculateTorque(float gasInput, float wheelRPM)
+    void Start() => currentRPM = idleRPM;
+
+    public float UpdateEngine(float gasInput, float breakInput, float wheelRPM, float speedMS)
     {
-        float gearRatio = gearRatios[Mathf.Clamp(currentGear - 1, 0, 9)];
+        float dt = Time.fixedDeltaTime;
+
+        shiftTimer -= dt;
+        clutchInput = shiftTimer > 0f ? 0f : 1f;
+
+        float gearRatio = GetCurrentGearRatio();
         float totalRatio = gearRatio * finalDriveRatio;
 
-        //rmp
-        float targetRPM = Mathf.Abs(wheelRPM * totalRatio);
+        float targetClutch = currentGear == NeutralGear ? 0f : clutchInput;
+        clutchEngagement = Mathf.Lerp(clutchEngagement, targetClutch, dt * clutchEngageSpeed);
 
-        if (targetRPM > redlineRPM)
+        float rpmPercent = Mathf.InverseLerp(idleRPM, redlineRPM, currentRPM);
+        float curveSample = torqueCurve.Evaluate(rpmPercent);
+        float engineTorque = curveSample * maxTorque * gasInput;
+
+        float frictionTorque = currentRPM * frictionCoeff;
+        float engineBrakingTorque = currentRPM * engineBrakingCoeff * (1f - gasInput) * breakInput;
+
+        float absWheelRPM = Mathf.Abs(wheelRPM);
+
+        drivetrainRPM = absWheelRPM * totalRatio;
+
+        float rpmDelta = currentRPM - drivetrainRPM;
+        bool clutchLocked = clutchEngagement >= 0.95f
+                            && Mathf.Abs(rpmDelta) < rpmSyncThreshold
+                            && currentGear != NeutralGear;
+
+        float outputTorque;
+
+        if (clutchLocked)
         {
-            gasInput = 0;
+            currentRPM = Mathf.Clamp(drivetrainRPM, idleRPM * 0.5f, redlineRPM);
 
-            CurrentRPM = redlineRPM + Random.Range(-revLimitVariance, revLimitVariance);
+            if (currentRPM >= redlineRPM)
+            {
+                outputTorque = 0f;
+            }
+            else
+            {
+                float speedSq = speedMS * speedMS;
+                float roadForce = (dragCoeff * speedSq) + (rollingResistCoeff * vehicleMass * 9.81f);
+                float loadAtEngine = (roadForce * wheelRadius) / Mathf.Max(totalRatio, 0.01f);
 
-            return -engineFriction * totalRatio * (targetRPM / redlineRPM);
+                float effectiveInertia = vehicleMass * Mathf.Pow(wheelRadius / Mathf.Max(totalRatio, 0.01f), 2f);
+                float totalInertia = engineInertia + effectiveInertia;
+
+                float netTorque = engineTorque - frictionTorque - engineBrakingTorque - loadAtEngine;
+                float rpmAccel = (netTorque / totalInertia) * (60f / (2f * Mathf.PI));
+                currentRPM += rpmAccel * dt;
+                currentRPM = Mathf.Clamp(currentRPM, idleRPM * 0.5f, redlineRPM);
+
+                outputTorque = netTorque;
+            }
         }
         else
-            CurrentRPM = Mathf.Lerp(CurrentRPM, Mathf.Clamp(targetRPM, idleRPM, redlineRPM), Time.fixedDeltaTime * 10f);
-
-        //torque and hp
-        float rpmPercent = Mathf.InverseLerp(0, redlineRPM, CurrentRPM);
-        engineTorque = normalizedTorqueCurve.Evaluate(rpmPercent) * maxTorque;
-        CurrentHP = (engineTorque * CurrentRPM) / 9549f;
-
-        Debug.Log(engineTorque);
-        //wheelTorque = (CurrentHP * 5252) / CurrentRPM; <===== correct calc for torque 
-
-        wheelTorque = engineTorque * totalRatio / engineFriction;
-        //wheelTorque = engineTorque * totalRatio * gasInput;
-
-        //Debug.Log($"RPM: {CurrentRPM:F0}, Torque: {engineTorque:F1} Nm, HP: {CurrentHP:F1}, Wheel Torque: {wheelTorque:F1} Nm"); 
-
-        //neutral
-        if (currentGear == -1)
         {
-            float revSpeed = gasInput * 7000f;
-            CurrentRPM += revSpeed * Time.fixedDeltaTime * 10;
-            CurrentRPM = Mathf.Clamp(CurrentRPM, idleRPM, redlineRPM);
+            float netTorque = engineTorque - frictionTorque - engineBrakingTorque;
+            float rpmAccel = (netTorque / engineInertia) * (60f / (2f * Mathf.PI));
+            currentRPM += rpmAccel * dt;
 
-            return 0;
+            if (gasInput < 0.05f && currentGear == NeutralGear)
+                currentRPM = Mathf.Lerp(currentRPM, idleRPM, dt * idleReturnSpeed);
+
+            currentRPM = Mathf.Clamp(currentRPM, idleRPM * 0.5f, redlineRPM);
+
+            float slipTorque = rpmDelta * clutchEngagement * 0.5f;
+            outputTorque = Mathf.Clamp(slipTorque, -clutchTorqueCapacity, clutchTorqueCapacity);
         }
 
-        //reverse or normal
-        if (currentGear == -2)
-            return -wheelTorque / 1.5f;
-        else
-            return wheelTorque;
+        float wheelTorque = outputTorque * totalRatio * transmissionEfficiency;
+        float clutchMaxTorque = clutchTorqueCapacity * clutchEngagement;
+
+        if (currentGear == ReverseGear)
+            wheelTorque = Mathf.Min(0f, -Mathf.Abs(wheelTorque));
+
+        return Mathf.Clamp(wheelTorque, -clutchMaxTorque, clutchMaxTorque);
     }
 
-    public void ShiftUp() { if (currentGear < gearRatios.Length) currentGear++; }
-    public void ShiftDown() { if (currentGear > -2) currentGear--; }
-
-    public float ApplyEngineBreaking()
+    private float GetCurrentGearRatio()
     {
-        float gearRatio = gearRatios[Mathf.Clamp(currentGear - 1, 0, 9)];
-        float totalRatio = gearRatio * finalDriveRatio;
+        if (currentGear == NeutralGear) return 0f;
+        if (currentGear == ReverseGear) return reverseRatio;
+        return gearRatios[Mathf.Clamp(currentGear, 0, gearRatios.Length - 1)];
+    }
 
-        return engineFriction * totalRatio * CurrentRPM / breakingFactor;
+    public void ShiftUp()
+    {
+        if (currentGear < gearRatios.Length - 1) { currentGear++; shiftTimer = 0.2f; }
+    }
+
+    public void ShiftDown()
+    {
+        if (currentGear > ReverseGear) { currentGear--; shiftTimer = 0.2f; }
     }
 }

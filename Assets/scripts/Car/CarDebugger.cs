@@ -31,12 +31,11 @@ public class CarDebugger : MonoBehaviour
 
         string telemetry =
             $"SPD: {speedKmh:F1} km/h\n" +
-            $"RPM: {engine.CurrentRPM:F0}\n" +
+            $"RPM: {engine.currentRPM:F0}\n" +
             $"GR:  {engine.currentGear + 1}\n" +
             $"GAS: {controller.gasInput:P0}\n" +
             $"BRK: {controller.brakeInput:P0}\n" +
-            $"STR: {controller.steerInput:P0}\n" + 
-            $"HP: {engine.CurrentHP}";
+            $"STR: {controller.steerInput:P0}\n";
 
         GUI.Label(new Rect(15, 15, 200, 150), telemetry, style);
     }
