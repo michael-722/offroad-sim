@@ -584,7 +584,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60.000004
   orthographic: 0
@@ -612,8 +612,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0004942385, y: 0.9985052, z: -0.05388337, w: -0.009158665}
-  m_LocalPosition: {x: 1.03, y: 0.85999995, z: 7.3}
+  m_LocalRotation: {x: 0.15354256, y: 0.8268654, z: -0.2711853, w: 0.4681633}
+  m_LocalPosition: {x: -2.97, y: 2.06, z: 9.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4829,10 +4829,11 @@ MonoBehaviour:
   maxTorque: 450
   redlineRPM: 7000
   idleRPM: 800
+  stallRPM: 400
   idleReturnSpeed: 12
-  engineInertia: 0.25
-  frictionCoeff: 0.004
-  engineBrakingCoeff: 0.05
+  engineInertia: 3
+  frictionCoeff: 0.02
+  engineBrakingCoeff: 0.1
   drivetrainMode: 2
   gearRatios:
   - 4.696
@@ -4846,18 +4847,19 @@ MonoBehaviour:
   - 0.689
   - 0.636
   reverseRatio: 4.866
-  finalDriveRatio: 4.5
+  finalDriveRatio: 4.7
   transmissionEfficiency: 0.97
-  rpmSyncThreshold: 150
+  rpmSyncThreshold: 2000
   vehicleMass: 2200
   wheelRadius: 0.48
   dragCoeff: 0.45
-  rollingResistCoeff: 0.015
+  rollingResistCoeff: 0.03
   clutchTorqueCapacity: 5000
   clutchEngageSpeed: 8
   currentGear: -1
   currentRPM: 0
   drivetrainRPM: 0
+  isStalled: 0
 --- !u!114 &9182428507365924706
 MonoBehaviour:
   m_ObjectHideFlags: 0

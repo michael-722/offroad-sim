@@ -46,7 +46,6 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         float driveWheelRPM = GetAverageWheelRPM();
-        float wheelInertia = numberOfWheels * wheelInertiaFactor;
         float speedMS = rb.linearVelocity.magnitude;
         float totalOutputTorque = engine.UpdateEngine(gasInput, brakeInput, driveWheelRPM, speedMS);
 
@@ -65,6 +64,7 @@ public class CarController : MonoBehaviour
             if (wheel.isSteerable)
                 wheel.collider.steerAngle = steerInput * maxSteerAngle;
 
+            //negative needed since wheel colliders are backwards in game spcae
             wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel : 0f;
 
             wheel.collider.brakeTorque = brakeInput * brakeForce;
@@ -77,11 +77,14 @@ public class CarController : MonoBehaviour
 
     private void ApplyDrag(float speedMS)
     {
-        float totalDrag = (aeroDragCoeff * speedMS * speedMS)
-                        + (rollingResistanceCoeff * rb.mass * 9.81f);
+        float drag = aeroDragCoeff * speedMS * speedMS;
+
+        bool engineConnected = !engine.isStalled && engine.currentGear != -1;
+        if (!engineConnected)
+            drag += rollingResistanceCoeff * rb.mass * 9.81f;
 
         if (speedMS > 0.1f)
-            rb.AddForce(-rb.linearVelocity.normalized * totalDrag, ForceMode.Force);
+            rb.AddForce(-rb.linearVelocity.normalized * drag, ForceMode.Force);
     }
 
     private void Update()
@@ -94,7 +97,7 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private float GetAverageWheelRPM()
+    public float GetAverageWheelRPM()
     {
         float total = 0; int count = 0;
         foreach (var w in wheels)
