@@ -5,7 +5,6 @@ public class CarController : MonoBehaviour
 {
     [SerializeField] private EngineSimulator engine;
     [SerializeField] private WheelData[] wheels;
-    private int numberOfWheels;
 
     [Header("settings")]
     [SerializeField] private float maxSteerAngle = 30f;
@@ -32,33 +31,38 @@ public class CarController : MonoBehaviour
     [HideInInspector] public float brakeInput;
     [HideInInspector] public float steerInput;
 
+    private int activeWheels = 0;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        //input event susbscriptions - lamdas
         InputManager.Instance.OnAccelerateEvent += (val) => gasInput = val;
         InputManager.Instance.OnBrakeEvent += (val) => brakeInput = val;
         InputManager.Instance.OnSteeringEvent += (val) => steerInput = val;
         InputManager.Instance.OnGearUpEvent += engine.ShiftUp;
         InputManager.Instance.OnGearDownEvent += engine.ShiftDown;
-        numberOfWheels = GetMotorizedWheelCount();
-    }
-
-    private void FixedUpdate()
-    {
-        float driveWheelRPM = GetAverageWheelRPM();
-        float speedMS = rb.linearVelocity.magnitude;
-        float totalOutputTorque = engine.UpdateEngine(gasInput, brakeInput, driveWheelRPM, speedMS);
-
-        if (tcsEnabled) ApplyTractionControl();
 
         int activeWheels = 0;
         foreach (var w in wheels)
             if (IsWheelInDrivetrain(w)) activeWheels++;
+    }
 
+    private void FixedUpdate()
+    {
+        //engine torque based on input and current speed
+        float speedMS = rb.linearVelocity.magnitude;
+        float totalOutputTorque = engine.UpdateEngine(gasInput, speedMS);
+
+        //traction control
+        if (tcsEnabled) ApplyTractionControl();
+
+        //distribute torque to wheels
         float torquePerWheel = activeWheels > 0
             ? (totalOutputTorque / activeWheels) * tcsTorqueFactor
             : 0f;
 
+        //apply steering torque and braking to each wheel
         foreach (var wheel in wheels)
         {
             if (wheel.isSteerable)
@@ -66,29 +70,33 @@ public class CarController : MonoBehaviour
 
             //negative needed since wheel colliders are backwards in game spcae
             wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel : 0f;
-
             wheel.collider.brakeTorque = brakeInput * brakeForce;
 
+            //update friction curve based on surface
             UpdateWheelFriction(wheel.collider);
         }
 
         ApplyDrag(speedMS);
     }
 
+ 
     private void ApplyDrag(float speedMS)
     {
         float drag = aeroDragCoeff * speedMS * speedMS;
 
+        //rolling resistance when engine not giveing torque to wheels
         bool engineConnected = !engine.isStalled && engine.currentGear != -1;
         if (!engineConnected)
             drag += rollingResistanceCoeff * rb.mass * 9.81f;
 
+        //apply force - so much simplilar then fully simulating drag - might re visit and add accutrate modeling===========
         if (speedMS > 0.1f)
             rb.AddForce(-rb.linearVelocity.normalized * drag, ForceMode.Force);
     }
 
     private void Update()
     {
+        //updating the wheel visuals
         foreach (var wheel in wheels)
         {
             wheel.collider.GetWorldPose(out Vector3 pos, out Quaternion rot);
@@ -97,25 +105,15 @@ public class CarController : MonoBehaviour
         }
     }
 
-    public float GetAverageWheelRPM()
-    {
-        float total = 0; int count = 0;
-        foreach (var w in wheels)
-        {
-            if (!IsWheelInDrivetrain(w)) continue;
-            total += w.collider.rpm;
-            count++;
-        }
-        return count > 0 ? total / count : 0f;
-    }
-
     private void UpdateWheelFriction(WheelCollider wheel)
     {
         WheelHit hit;
         if (!wheel.GetGroundHit(out hit)) return;
 
+        //get current material name
         string mat = hit.collider.sharedMaterial != null ? hit.collider.sharedMaterial.name : "";
 
+        //adjust settings based on physics material
         float stiffness = 1.0f;
         if (mat.Contains("Rock")) stiffness = rockStiffness;
         else if (mat.Contains("Dirt")) stiffness = dirtStiffness;
@@ -132,6 +130,7 @@ public class CarController : MonoBehaviour
 
     private void ApplyTractionControl()
     {
+        //find the wheel with the most slip
         maxSlipDetected = 0f;
         foreach (var wheel in wheels)
         {
@@ -141,18 +140,11 @@ public class CarController : MonoBehaviour
             float slip = Mathf.Abs(hit.forwardSlip);
             if (slip > maxSlipDetected) maxSlipDetected = slip;
         }
-
+        
+        //limit torque if is over slip limit
         tcsTorqueFactor = maxSlipDetected > slipLimit
             ? Mathf.Lerp(tcsTorqueFactor, 1f - Mathf.Clamp01((maxSlipDetected - slipLimit) / 0.5f), Time.fixedDeltaTime * 10f)
             : Mathf.Lerp(tcsTorqueFactor, 1f, Time.fixedDeltaTime * 2f);
-    }
-
-    private int GetMotorizedWheelCount()
-    {
-        int count = 0;
-        foreach (var wheel in wheels)
-            if (wheel.isMotorized) count++;
-        return count;
     }
 
     private bool IsWheelInDrivetrain(WheelData wheel)

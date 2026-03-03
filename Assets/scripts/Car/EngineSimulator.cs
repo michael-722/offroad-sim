@@ -4,7 +4,7 @@ public enum DrivetrainType { RearWheelDrive, FrontWheelDrive, AllWheelDrive }
 
 public class EngineSimulator : MonoBehaviour
 {
-    [Header("Engine")]
+    [Header("engine")]
     [SerializeField] private float maxTorque = 450f;
     [SerializeField] private float redlineRPM = 7000f;
     [SerializeField] private float idleRPM = 800f;
@@ -14,7 +14,7 @@ public class EngineSimulator : MonoBehaviour
     [SerializeField] private float frictionCoeff = 0.02f;
     [SerializeField] private float engineBrakingCoeff = 0.1f;
 
-    [Header("Gearbox")]
+    [Header("gearbox")]
     public DrivetrainType drivetrainMode = DrivetrainType.AllWheelDrive;
     [SerializeField] private float[] gearRatios = { 4.696f, 2.985f, 2.146f, 1.769f, 1.520f, 1.275f, 1.000f, 0.854f, 0.689f, 0.636f };
     [SerializeField] private float reverseRatio = 4.866f;
@@ -22,13 +22,13 @@ public class EngineSimulator : MonoBehaviour
     [SerializeField] private float transmissionEfficiency = 0.97f;
     [SerializeField] private float rpmSyncThreshold = 300f;
 
-    [Header("Drivetrain Load")]
+    [Header("drivetrain load")]
     [SerializeField] private float vehicleMass = 2000f;
     [SerializeField] private float wheelRadius = 0.38f;
     [SerializeField] private float dragCoeff = 0.45f;
     [SerializeField] private float rollingResistCoeff = 0.015f;
 
-    [Header("Clutch")]
+    [Header("clutch")]
     [SerializeField] private float clutchTorqueCapacity = 700f;
     [SerializeField] private float clutchEngageSpeed = 4f;
 
@@ -45,6 +45,8 @@ public class EngineSimulator : MonoBehaviour
     private float shiftTimer = 0f;
     private AnimationCurve torqueCurve;
 
+    private float outputTorque = 0f;
+
     void Awake()
     {
         torqueCurve = new AnimationCurve(
@@ -59,10 +61,11 @@ public class EngineSimulator : MonoBehaviour
 
     void Start() => currentRPM = idleRPM;
 
-    public float UpdateEngine(float gasInput, float brakeInput, float wheelRPM, float speedMS)
+    public float UpdateEngine(float gasInput, float speedMS)
     {
         float dt = Time.fixedDeltaTime;
-
+        
+        //stall recovery
         if (isStalled)
         {
             if (currentGear == NeutralGear && gasInput > 0.1f)
@@ -73,44 +76,53 @@ public class EngineSimulator : MonoBehaviour
             else return 0f;
         }
 
+        //powerloss during shift
         shiftTimer -= dt;
         clutchInput = shiftTimer > 0f ? 0f : 1f;
 
+        //gearing
         float gearRatio = GetCurrentGearRatio();
         float totalRatio = gearRatio * finalDriveRatio;
 
+        //clutch engagement
         float targetClutch = currentGear == NeutralGear ? 0f : clutchInput;
         clutchEngagement = Mathf.Lerp(clutchEngagement, targetClutch, dt * clutchEngageSpeed);
 
+        //engine torque
         float rpmPercent = Mathf.InverseLerp(idleRPM, redlineRPM, currentRPM);
         float curveSample = torqueCurve.Evaluate(rpmPercent);
         bool revLimiter = currentRPM >= redlineRPM * 0.98f;
         float engineTorque = revLimiter ? 0f : curveSample * maxTorque * gasInput;
 
+        //torque losses
         float frictionTorque = currentRPM * frictionCoeff;
         float engineBrakingTorque = currentRPM * engineBrakingCoeff * (1f - gasInput);
 
+        //wheel rpm based on ground speed - need to intergrate with tsc might need to change ============
         float cleanWheelRPM = totalRatio > 0.01f ? (speedMS / (2f * Mathf.PI * wheelRadius)) * 60f : 0f;
         drivetrainRPM = cleanWheelRPM * totalRatio;
 
+        //clutch lock
         float rpmDelta = currentRPM - drivetrainRPM;
         bool clutchLocked = clutchEngagement >= 0.95f
                            && Mathf.Abs(rpmDelta) < rpmSyncThreshold
                            && currentGear != NeutralGear;
 
-        float outputTorque;
-
-        if (clutchLocked)
+        //engine simulation when clutch is locked vs slipping
+        if (clutchLocked)//clutch engaged
         {
             currentRPM = Mathf.Clamp(drivetrainRPM, stallRPM, redlineRPM);
 
+            //calculate load at engine based on speed drag and rolling resistance
             float speedSq = speedMS * speedMS;
             float roadForce = (dragCoeff * speedSq) + (rollingResistCoeff * vehicleMass * 9.81f);
             float loadAtEngine = (roadForce * wheelRadius) / Mathf.Max(totalRatio, 0.01f);
 
+            //inertia at engine accounting for drivetrain gearing and wheel inertia
             float effectiveInertia = vehicleMass * Mathf.Pow(wheelRadius / Mathf.Max(totalRatio, 0.01f), 2f);
             float totalInertia = engineInertia + effectiveInertia;
 
+            //net torque at engine and update rpm
             float netTorque = engineTorque - frictionTorque - engineBrakingTorque - loadAtEngine;
             float rpmAccel = (netTorque / totalInertia) * (60f / (2f * Mathf.PI));
             currentRPM += rpmAccel * dt;
@@ -118,6 +130,7 @@ public class EngineSimulator : MonoBehaviour
 
             outputTorque = netTorque;
 
+            //stall check 
             if (currentRPM <= stallRPM && netTorque < 0f)
             {
                 isStalled = true;
@@ -125,27 +138,33 @@ public class EngineSimulator : MonoBehaviour
                 return 0f;
             }
         }
-        else
+        else//clutch slipping or neural
         {
+            //simulate engine with losses and no load since clutch is slipping
             float netFreeRev = engineTorque - frictionTorque - engineBrakingTorque;
             float rpmAccel = (netFreeRev / engineInertia) * (60f / (2f * Mathf.PI));
             currentRPM += rpmAccel * dt;
 
+            //ile return when no throttle
             if (gasInput < 0.05f && currentGear == NeutralGear)
                 currentRPM = Mathf.Lerp(currentRPM, idleRPM, dt * idleReturnSpeed);
 
             currentRPM = Mathf.Clamp(currentRPM, stallRPM, redlineRPM);
 
+            //output porportional to clutch engagement
             float slipTorque = engineTorque * clutchEngagement * transmissionEfficiency;
             outputTorque = Mathf.Clamp(slipTorque, -clutchTorqueCapacity, clutchTorqueCapacity);
         }
 
+        //wheel torque after gearbox and clutch losses
         float wheelTorque = outputTorque * totalRatio * transmissionEfficiency;
         float clutchMaxTorque = clutchTorqueCapacity * clutchEngagement;
 
+        //reverse
         if (currentGear == ReverseGear)
             wheelTorque = Mathf.Min(0f, -Mathf.Abs(wheelTorque));
 
+        //return torque to wheels limited by clutch slipping
         return clutchLocked
             ? wheelTorque
             : Mathf.Clamp(wheelTorque, -clutchMaxTorque, clutchMaxTorque);
