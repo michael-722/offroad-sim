@@ -1,0 +1,17 @@
+DONE 
+input manager
+car controller 
+engine simulation 
+
+TODO 
+- reseting when stuck
+- stalling 
+- level select 
+- level challenge design - gt licence style?
+- moza wheel controls 
+- dashboard visuals 
+- env design 
+- options - sensitivity fov ect 
+- mirrors
+- on screen prompts - what went wrong/what to do next
+- wheel spin/skid effect?
