@@ -28,14 +28,21 @@ public class CarDebugger : MonoBehaviour
         style.fontStyle = FontStyle.Bold;
 
         float speedKmh = rb.linearVelocity.magnitude * 3.6f;
+        string gear = engine.currentGear switch
+        {
+            -2 => "R",
+            -1 => "N",
+            _ => (engine.currentGear + 1).ToString()
+        };
 
         string telemetry =
             $"SPD: {speedKmh:F1} km/h\n" +
             $"RPM: {engine.currentRPM:F0}\n" +
-            $"GR:  {engine.currentGear + 1}\n" +
+            $"GR:  {gear}\n" +
             $"GAS: {controller.gasInput:P0}\n" +
             $"BRK: {controller.brakeInput:P0}\n" +
-            $"STR: {controller.steerInput:P0}\n";
+            $"STR: {controller.steerInput:P0}\n" +
+            $"TCS: {controller.tcsTorqueFactor}\n";
 
         GUI.Label(new Rect(15, 15, 200, 150), telemetry, style);
     }

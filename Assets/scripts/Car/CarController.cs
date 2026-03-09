@@ -13,7 +13,7 @@ public class CarController : MonoBehaviour
     [Header("traction control")]
     [SerializeField] bool tcsEnabled = true;
     [Range(0, 1)][SerializeField] float slipLimit = 0.35f;
-    private float tcsTorqueFactor = 1f;
+    [HideInInspector] public float tcsTorqueFactor = 1f;
     private float maxSlipDetected = 0f;
     [SerializeField] private float wheelInertiaFactor = 0.6f;
 
@@ -43,7 +43,8 @@ public class CarController : MonoBehaviour
         InputManager.Instance.OnGearUpEvent += engine.ShiftUp;
         InputManager.Instance.OnGearDownEvent += engine.ShiftDown;
 
-        int activeWheels = 0;
+        //fixed - removed local 'int' declaration that was shadowing the class field, keeping activeWheels at 0 forever
+        activeWheels = 0;
         foreach (var w in wheels)
             if (IsWheelInDrivetrain(w)) activeWheels++;
     }
@@ -51,16 +52,27 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         //engine torque based on input and current speed
-        float speedMS = rb.linearVelocity.magnitude;
+        float speedMS = Vector3.Dot(rb.linearVelocity, transform.forward);
+
+        //sample slope from wheel ground normals and pass to engine so it can account for grade load
+        engine.groundSlopeAngle = 0f;
+        foreach (var w in wheels)
+        {
+            WheelHit hit;
+            if (w.collider.GetGroundHit(out hit))
+            {
+                engine.groundSlopeAngle = Mathf.Max(engine.groundSlopeAngle, Vector3.Angle(hit.normal, Vector3.up));
+                break;
+            }
+        }
+
         float totalOutputTorque = engine.UpdateEngine(gasInput, speedMS);
 
         //traction control
         if (tcsEnabled) ApplyTractionControl();
 
         //distribute torque to wheels
-        float torquePerWheel = activeWheels > 0
-            ? (totalOutputTorque / activeWheels) * tcsTorqueFactor
-            : 0f;
+        float torquePerWheel = activeWheels > 0 ? (totalOutputTorque / activeWheels) * tcsTorqueFactor : 0f;
 
         //apply steering torque and braking to each wheel
         foreach (var wheel in wheels)
@@ -76,10 +88,11 @@ public class CarController : MonoBehaviour
             UpdateWheelFriction(wheel.collider);
         }
 
-        ApplyDrag(speedMS);
+        //magnitude for drag since it always opposes velocity regardless of direction
+        ApplyDrag(rb.linearVelocity.magnitude);
     }
 
- 
+
     private void ApplyDrag(float speedMS)
     {
         float drag = aeroDragCoeff * speedMS * speedMS;
@@ -137,10 +150,14 @@ public class CarController : MonoBehaviour
             if (!wheel.isMotorized) continue;
             WheelHit hit;
             if (!wheel.collider.GetGroundHit(out hit)) continue;
-            float slip = Mathf.Abs(hit.forwardSlip);
-            if (slip > maxSlipDetected) maxSlipDetected = slip;
+
+            //normalize slip 0-1 ratio
+            float wheelSpeedMS = wheel.collider.radius * wheel.collider.rpm * Mathf.Deg2Rad * 6f;
+            float normalizedSlip = wheelSpeedMS > 0.5f ? Mathf.Abs(hit.forwardSlip) / wheelSpeedMS : 0f;
+
+            if (normalizedSlip > maxSlipDetected) maxSlipDetected = normalizedSlip;
         }
-        
+
         //limit torque if is over slip limit
         tcsTorqueFactor = maxSlipDetected > slipLimit
             ? Mathf.Lerp(tcsTorqueFactor, 1f - Mathf.Clamp01((maxSlipDetected - slipLimit) / 0.5f), Time.fixedDeltaTime * 10f)
@@ -167,12 +184,5 @@ public class CarController : MonoBehaviour
         public bool isSteerable;
         public bool isMotorized;
         public bool isFrontWheel;
-    }
-
-    public enum DrivetrainType
-    {
-        RearWheelDrive,
-        FrontWheelDrive,
-        AllWheelDrive
     }
 }

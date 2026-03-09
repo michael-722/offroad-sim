@@ -47,6 +47,8 @@ public class EngineSimulator : MonoBehaviour
 
     private float outputTorque = 0f;
 
+    [HideInInspector] public float groundSlopeAngle = 0f;
+
     void Awake()
     {
         torqueCurve = new AnimationCurve(
@@ -64,7 +66,7 @@ public class EngineSimulator : MonoBehaviour
     public float UpdateEngine(float gasInput, float speedMS)
     {
         float dt = Time.fixedDeltaTime;
-        
+
         //stall recovery
         if (isStalled)
         {
@@ -94,11 +96,18 @@ public class EngineSimulator : MonoBehaviour
         bool revLimiter = currentRPM >= redlineRPM * 0.98f;
         float engineTorque = revLimiter ? 0f : curveSample * maxTorque * gasInput;
 
+        //idle creep
+        if (currentGear != NeutralGear && currentGear != ReverseGear && !isStalled)
+            engineTorque += Mathf.Lerp(maxTorque * 0.08f, 0f, rpmPercent * 3f);
+
         //torque losses
         float frictionTorque = currentRPM * frictionCoeff;
-        float engineBrakingTorque = currentRPM * engineBrakingCoeff * (1f - gasInput);
+
+        //apply engine braking through drivetrain
+        float engineBrakingTorque = clutchEngagement > 0.1f ? currentRPM * engineBrakingCoeff * (1f - gasInput) : 0f;
 
         //wheel rpm based on ground speed - need to intergrate with tsc might need to change ============
+        //speedMS is signed by CarController (negative when rolling back) so drivetrainRPM correctly goes negative on rollback
         float cleanWheelRPM = totalRatio > 0.01f ? (speedMS / (2f * Mathf.PI * wheelRadius)) * 60f : 0f;
         drivetrainRPM = cleanWheelRPM * totalRatio;
 
@@ -116,6 +125,11 @@ public class EngineSimulator : MonoBehaviour
             //calculate load at engine based on speed drag and rolling resistance
             float speedSq = speedMS * speedMS;
             float roadForce = (dragCoeff * speedSq) + (rollingResistCoeff * vehicleMass * 9.81f);
+
+            //fixed - add gravity component from slope so engine actually fights the hill instead of watching rpm fall
+            float gradeForce = vehicleMass * 9.81f * Mathf.Sin(groundSlopeAngle * Mathf.Deg2Rad);
+            roadForce += gradeForce;
+
             float loadAtEngine = (roadForce * wheelRadius) / Mathf.Max(totalRatio, 0.01f);
 
             //inertia at engine accounting for drivetrain gearing and wheel inertia
