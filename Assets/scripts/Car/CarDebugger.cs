@@ -28,6 +28,8 @@ public class CarDebugger : MonoBehaviour
         style.fontStyle = FontStyle.Bold;
 
         float speedKmh = rb.linearVelocity.magnitude * 3.6f;
+        if (speedKmh < 0) speedKmh = 0;
+
         string gear = engine.currentGear switch
         {
             -2 => "R",
