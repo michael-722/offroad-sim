@@ -57,12 +57,14 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
 
     public void OnAccelerate(InputAction.CallbackContext context)
     {
-        OnAccelerateEvent?.Invoke(context.ReadValue<float>());
+        float val = Mathf.Lerp(0, 1, context.ReadValue<float>());
+        OnAccelerateEvent?.Invoke(val);
     }
 
     public void OnBrake(InputAction.CallbackContext context)
     {
-        OnBrakeEvent?.Invoke(context.ReadValue<float>());
+        float val = Mathf.Lerp(0, 1, context.ReadValue<float>());
+        OnBrakeEvent?.Invoke(val);
     }
 
     public void OnSteering(InputAction.CallbackContext context)

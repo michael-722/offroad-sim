@@ -15,7 +15,6 @@ public class CarController : MonoBehaviour
     [Range(0, 1)][SerializeField] float slipLimit = 0.35f;
     [HideInInspector] public float tcsTorqueFactor = 1f;
     private float maxSlipDetected = 0f;
-    [SerializeField] private float wheelInertiaFactor = 0.6f;
 
     [Header("surface settings")]
     [SerializeField] private float rockStiffness = 1.0f;

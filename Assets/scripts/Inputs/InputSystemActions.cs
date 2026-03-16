@@ -208,6 +208,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7342cbe6-d00b-4571-a69a-5ab61ab0f18e"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""fc82d4a6-6f43-490e-83be-73535adc2cbb"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
@@ -230,8 +241,30 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9baa0af3-fcdf-4c5c-a4b4-645ac51739f9"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/rz"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""fec0bd1b-7d52-4cd7-9ea3-aeb93175be52"",
                     ""path"": ""<Gamepad>/leftStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Steering"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0ba5e6b-3ac4-420e-a433-09c4f47237eb"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/stick/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -296,6 +329,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9b4495ee-c892-4bf2-b04a-443feb8d3ed9"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CycleCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ac8d3b8f-1dac-459a-b7a3-8a382935af8b"",
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
@@ -309,6 +353,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""229ef129-dd93-48db-bbd5-80bc74a8dc59"",
                     ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e0b1724-65e0-4eff-bb23-9135c48e16c6"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button8"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -340,6 +395,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""571f70c2-20cc-4ad1-bcb2-c95adbd81c85"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0454b9c5-32a3-47c6-bd1f-cfcc4abf2f22"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -356,6 +422,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48ed49e5-f353-4259-b51e-3ce925d7c0d8"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -384,6 +461,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ef817099-aa79-4203-aa86-c51f1c80e0aa"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button37"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e6a99ef7-751c-4605-9c6b-c5a62e6837ae"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -406,6 +494,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""c65bd07f-0ff6-45a4-87c9-a1faf9d4897f"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button14"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GearUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6c04fcd8-75bd-4459-b7e7-eb99094a43cf"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -422,6 +521,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
+                    ""action"": ""GearDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a6d566e-2bad-46fb-a5d7-a331f212b061"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button13"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""GearDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
