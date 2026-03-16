@@ -25,6 +25,7 @@ public class CarController : MonoBehaviour
     [Header("drag")]
     [SerializeField] private float aeroDragCoeff = 0.45f;
     [SerializeField] private float rollingResistanceCoeff = 0.015f;
+    [SerializeField] private float engineBrakingForce = 800f;
 
     private Rigidbody rb;
     [HideInInspector] public float gasInput;
@@ -88,21 +89,31 @@ public class CarController : MonoBehaviour
             UpdateWheelFriction(wheel.collider);
         }
 
-        //magnitude for drag since it always opposes velocity regardless of direction
         ApplyDrag(rb.linearVelocity.magnitude);
     }
 
 
     private void ApplyDrag(float speedMS)
     {
+        //aero drag - always apply
         float drag = aeroDragCoeff * speedMS * speedMS;
 
-        //rolling resistance when engine not giveing torque to wheels
-        bool engineConnected = !engine.isStalled && engine.currentGear != -1;
-        if (!engineConnected)
-            drag += rollingResistanceCoeff * rb.mass * 9.81f;
+        //rolling resistance - always when moving
+        drag += rollingResistanceCoeff * rb.mass * 9.81f;
 
-        //apply force - so much simplilar then fully simulating drag - might re visit and add accutrate modeling===========
+        //engine braking - in gear clutch engaged off throttle
+        bool inGear = !engine.isStalled && engine.currentGear >= 0;
+        if (inGear && gasInput < 0.05f && speedMS > 0.5f)
+        {
+            //scale with gears - lower gear = more engine braking
+            float gearFactor = Mathf.Clamp01(engine.drivetrainRPM / Mathf.Max(engine.currentRPM, 1f));
+            float engineBrake = engineBrakingForce * gearFactor * (1f - gasInput);
+
+            //low speed idle creep - fade engine braking out
+            float speedFade = Mathf.InverseLerp(2f, 4f, speedMS);
+            drag += engineBrake * speedFade;
+        }
+
         if (speedMS > 0.1f)
             rb.AddForce(-rb.linearVelocity.normalized * drag, ForceMode.Force);
     }

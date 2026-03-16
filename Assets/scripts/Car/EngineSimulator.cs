@@ -107,15 +107,12 @@ public class EngineSimulator : MonoBehaviour
         float engineBrakingTorque = clutchEngagement > 0.1f ? currentRPM * engineBrakingCoeff * (1f - gasInput) : 0f;
 
         //wheel rpm based on ground speed - need to intergrate with tsc might need to change ============
-        //speedMS is signed by CarController (negative when rolling back) so drivetrainRPM correctly goes negative on rollback
-        float cleanWheelRPM = totalRatio > 0.01f ? (speedMS / (2f * Mathf.PI * wheelRadius)) * 60f : 0f;
+        float cleanWheelRPM = totalRatio > 0.01f ? (Mathf.Abs(speedMS) / (2f * Mathf.PI * wheelRadius)) * 60f : 0f;
         drivetrainRPM = cleanWheelRPM * totalRatio;
 
         //clutch lock
         float rpmDelta = currentRPM - drivetrainRPM;
-        bool clutchLocked = clutchEngagement >= 0.95f
-                           && Mathf.Abs(rpmDelta) < rpmSyncThreshold
-                           && currentGear != NeutralGear;
+        bool clutchLocked = clutchEngagement >= 0.95f && Mathf.Abs(rpmDelta) < rpmSyncThreshold && currentGear != NeutralGear;
 
         //engine simulation when clutch is locked vs slipping
         if (clutchLocked)//clutch engaged
@@ -179,9 +176,7 @@ public class EngineSimulator : MonoBehaviour
             wheelTorque = Mathf.Min(0f, -Mathf.Abs(wheelTorque));
 
         //return torque to wheels limited by clutch slipping
-        return clutchLocked
-            ? wheelTorque
-            : Mathf.Clamp(wheelTorque, -clutchMaxTorque, clutchMaxTorque);
+        return clutchLocked ? wheelTorque : Mathf.Clamp(wheelTorque, -clutchMaxTorque, clutchMaxTorque);
     }
 
     private float GetCurrentGearRatio()
