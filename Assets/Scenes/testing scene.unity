@@ -269,6 +269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0785ce25017811940a0541692e122f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveMotorTest: 0
+  constForceTest: 1
+  SpringForceTest: 0
 --- !u!4 &458936094
 Transform:
   m_ObjectHideFlags: 0
@@ -959,31 +962,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.97
+      value: 1.03
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.06
+      value: 0.85999995
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.3
+      value: 7.3
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.4681633
+      value: -0.009158665
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.15354256
+      value: -0.0004942385
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8268654
+      value: 0.9985052
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.2711853
+      value: -0.05388337
       objectReference: {fileID: 0}
     - target: {fileID: 6152925964382699134, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_Name
@@ -991,7 +994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7007185146223985702, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: near clip plane
-      value: 0.3
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
