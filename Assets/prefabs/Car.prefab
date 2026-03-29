@@ -2878,13 +2878,39 @@ MonoBehaviour:
     isFrontWheel: 0
   maxSteerAngle: 35
   brakeForce: 3000
-  tcsEnabled: 1
-  slipLimit: 0.612
-  tcsTorqueFactor: 1
   rockStiffness: 1
   dirtStiffness: 0.7
   mudStiffness: 0.3
-  aeroDragCoeff: 4
+  surfaceProfiles:
+  - materialTag: Rock
+    extremumSlip: 0.25
+    extremumValue: 1.6
+    asymptoteSlip: 0.55
+    asymptoteValue: 1.2
+    sidewaysStiffness: 1.5
+    tcsSlipLimit: 1
+  - materialTag: Dirt
+    extremumSlip: 0.35
+    extremumValue: 1.2
+    asymptoteSlip: 0.7
+    asymptoteValue: 0.9
+    sidewaysStiffness: 1
+    tcsSlipLimit: 1.5
+  - materialTag: Mud
+    extremumSlip: 0.5
+    extremumValue: 0.7
+    asymptoteSlip: 0.9
+    asymptoteValue: 0.5
+    sidewaysStiffness: 0.6
+    tcsSlipLimit: 2
+  tcsEnabled: 1
+  tcsMinSpeed: 4
+  tcsResponseSpeed: 2
+  tcsTorqueFactor: 1
+  launchBlendSpeed: 5
+  launchExtrumumBoost: 0.6
+  launchSlipReduction: 0.08
+  aeroDragCoeff: 0.45
   rollingResistanceCoeff: 0.015
   engineBrakingForce: 800
   gasInput: 0
@@ -2902,12 +2928,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e80bbe39240e84ea4353acab2e5949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTorque: 450
+  maxTorque: 350
   redlineRPM: 7000
   idleRPM: 800
   stallRPM: 400
-  idleReturnSpeed: 7
-  engineInertia: 1
+  idleReturnSpeed: 1
+  engineInertia: 1.5
   frictionCoeff: 0.02
   engineBrakingCoeff: 0.1
   drivetrainMode: 2
@@ -2925,18 +2951,75 @@ MonoBehaviour:
   reverseRatio: 4.866
   finalDriveRatio: 4.7
   transmissionEfficiency: 0.97
-  rpmSyncThreshold: 2000
-  vehicleMass: 2200
-  wheelRadius: 0.48
-  dragCoeff: 4
-  rollingResistCoeff: 0.03
-  clutchTorqueCapacity: 700
+  rpmSyncThreshold: 200
+  clutchTorqueCapacity: 950
   clutchEngageSpeed: 8
   currentGear: -1
   currentRPM: 0
   drivetrainRPM: 0
   isStalled: 0
   groundSlopeAngle: 0
+  outputWheelTorque: 0
+  torqueCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.15
+      value: 0.7
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4
+      value: 0.95
+      inSlope: 0.8
+      outSlope: 0.8
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.65
+      value: 1
+      inSlope: 0.1
+      outSlope: 0.1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9241019
+      value: 0.90666145
+      inSlope: -0.91531086
+      outSlope: -0.91531086
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0.8
+      inSlope: -0.36939248
+      outSlope: -0.36939248
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &7848913242581288029
 MonoBehaviour:
   m_ObjectHideFlags: 0

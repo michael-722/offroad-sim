@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983c88a76a581a747a568cc7797a05ce, type: 3}
+  m_Name: Tier_Standard
+  m_EditorClassIdentifier: 
+  tierId: standard
+  displayName: Standard Training
+  description: Standard training introduces more complex off road driving techniques
+    and more difficult situations
+  icon: {fileID: 0}
+  unlockedByDefault: 0
+  prerequisiteTier: {fileID: 11400000, guid: c5f1a81ad08a8804db4908d781d5b1a4, type: 2}
+  lessons: []

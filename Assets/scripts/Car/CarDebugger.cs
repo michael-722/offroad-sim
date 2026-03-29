@@ -44,7 +44,8 @@ public class CarDebugger : MonoBehaviour
             $"GAS: {controller.gasInput:P0}\n" +
             $"BRK: {controller.brakeInput:P0}\n" +
             $"STR: {controller.steerInput:P0}\n" +
-            $"TCS: {controller.tcsTorqueFactor}\n";
+            $"TCS: {controller.tcsTorqueFactor}\n" +
+            $"GRAD: {engine.groundSlopeAngle:F1}%\n";
 
         GUI.Label(new Rect(15, 15, 200, 150), telemetry, style);
     }
