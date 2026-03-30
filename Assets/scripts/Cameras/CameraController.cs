@@ -35,7 +35,7 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        SetCamera(cameras.followCam);
+        SetCamera(cameras.interiorCam);
 
         if (InputManager.Instance != null)
         {

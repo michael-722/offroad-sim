@@ -28,6 +28,8 @@ public class TutorialController : MonoBehaviour
     private bool gearDownFired;
     private bool resetFired;
     private bool cameraCycleFired;
+    private bool cameraLeft;
+    private bool cameraRight;
 
     private void OnEnable()
     {
@@ -41,6 +43,8 @@ public class TutorialController : MonoBehaviour
         InputManager.Instance.OnGearDownEvent += () => gearDownFired = true;
         InputManager.Instance.OnResetEvent += () => resetFired = true;
         InputManager.Instance.OnCycleCameraEvent += () => cameraCycleFired = true;
+        InputManager.Instance.OnCameraRightEvent += () => cameraRight = true;
+        InputManager.Instance.OnCameraLeftEvent += () => cameraLeft = true;
     }
 
     private void OnDisable()
@@ -53,8 +57,10 @@ public class TutorialController : MonoBehaviour
         InputManager.Instance.OnSteeringEvent -= v => lastSteer = v;
         InputManager.Instance.OnGearUpEvent -= () => gearUpFired = true;
         InputManager.Instance.OnGearDownEvent -= () => gearDownFired = true;
-        InputManager.Instance.OnResetEvent += () => resetFired = true;
+        InputManager.Instance.OnResetEvent -= () => resetFired = true;
         InputManager.Instance.OnCycleCameraEvent -= () => cameraCycleFired = true;
+        InputManager.Instance.OnCameraRightEvent -= () => cameraRight = true;
+        InputManager.Instance.OnCameraLeftEvent -= () => cameraLeft = true;
     }
 
     private void Start()
@@ -87,7 +93,7 @@ public class TutorialController : MonoBehaviour
     {
         //device detection
         yield return RunStep(
-            "Welcome to basic training! Press any input to detect your input device.",
+            "Welcome to basic training! Press any button to start.",
             () => _currentDevice != InputDevice.Unknown
         );
 
@@ -133,7 +139,21 @@ public class TutorialController : MonoBehaviour
             () => resetFired
         );
 
-        //camera
+        //camera left
+        ClearFlags();
+        yield return RunStep(
+            Prompt("Look left", "X", "D-pad left", "D-pad left"),
+            () => cameraLeft
+            );
+
+        //camera right
+        ClearFlags();
+        yield return RunStep(
+            Prompt("Look left", "C", "D-pad right", "D-pad right"),
+            () => cameraLeft
+            );
+
+        //camera mode
         ClearFlags();
         yield return RunStep(
             Prompt("Cycle through camera views.", "Z", "D-pad down", "D-pad down"),
