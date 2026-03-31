@@ -1,0 +1,3 @@
+https://manticorp.github.io/unrealheightmap/#latitude/38.67639739080187/longitude/-120.70747375488281/zoom/11/outputzoom/13/width/505/height/505/outputformat/png16
+
+taken from in the area of 39 lat and -120 long

@@ -20,7 +20,5 @@ MonoBehaviour:
     losing control.
   assessmentTimeLimit: 90
   passingScore: 80
-  prerequisites:
-  - {fileID: 11400000, guid: f7be2c410aaec364393c1ede88c049d6, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

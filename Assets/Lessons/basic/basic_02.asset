@@ -15,12 +15,10 @@ MonoBehaviour:
   lessonId: basic_02
   title: Moving off and Stopping
   bordaUnit: Unit 2 - Moving off and Stopping on flat ground
-  briefingText: 
-  assessmentObjective: Complete three start stop cycles inside the marked zones without
-    wheelspin.
+  briefingText: Come to a complete stop within each stopping area before moving off
+    to the next.
+  assessmentObjective: Complete three start stop cycles inside the marked zones.
   assessmentTimeLimit: 90
   passingScore: 65
-  prerequisites:
-  - {fileID: 11400000, guid: 765904d9f133c4441acbec897890cbdb, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

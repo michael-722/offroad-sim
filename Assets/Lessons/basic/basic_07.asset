@@ -19,7 +19,5 @@ MonoBehaviour:
   assessmentObjective: Perform three emergancy stops after getting up to speed.
   assessmentTimeLimit: 60
   passingScore: 70
-  prerequisites:
-  - {fileID: 11400000, guid: 84af1f0011296154f9392b50a8b4e960, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

@@ -19,7 +19,5 @@ MonoBehaviour:
   assessmentObjective: Descent the slope without losing control or stalling.
   assessmentTimeLimit: 90
   passingScore: 80
-  prerequisites:
-  - {fileID: 11400000, guid: 01c018e6dc82acd46aa03fc692db0e3f, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

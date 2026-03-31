@@ -19,7 +19,5 @@ MonoBehaviour:
   assessmentObjective: Navigate a mix of surfaces while causing minimal loss of traction.
   assessmentTimeLimit: 120
   passingScore: 65
-  prerequisites:
-  - {fileID: 11400000, guid: f0d289f20c8f4ec4a91f18f2acfb14a5, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

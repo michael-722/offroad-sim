@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Advanced training is the highest level availible with the most complex
     and difficult situations
   icon: {fileID: 0}
-  unlockedByDefault: 0
+  unlockedByDefault: 1
   prerequisiteTier:
   - {fileID: 11400000, guid: c5f1a81ad08a8804db4908d781d5b1a4, type: 2}
   - {fileID: 11400000, guid: 027cec8451169264290b5e5a341e0555, type: 2}

@@ -22,41 +22,9 @@ public class CarController : MonoBehaviour
     [SerializeField] private float maxSteerAngle = 30f;
     [SerializeField] private float brakeForce = 3000f;
 
-    [Header("surface friction profiles")]
+    [Header("friction settings")]
     [SerializeField]
-    private SurfaceFriction[] surfaceProfiles = new SurfaceFriction[]
-    {
-    new SurfaceFriction//rock
-    {
-        materialTag     = "Rock",
-        extremumSlip    = 0.25f,
-        extremumValue   = 1.6f,
-        asymptoteSlip   = 0.55f,
-        asymptoteValue  = 1.2f,
-        sidewaysStiffness = 1.5f,
-        tcsSlipLimit    = 0.30f
-    },
-    new SurfaceFriction//dirt
-    {
-        materialTag     = "Dirt",
-        extremumSlip    = 0.35f,
-        extremumValue   = 1.2f,
-        asymptoteSlip   = 0.7f,
-        asymptoteValue  = 0.9f,
-        sidewaysStiffness = 1.0f,
-        tcsSlipLimit    = 0.40f
-    },
-    new SurfaceFriction//mud
-    {
-        materialTag     = "Mud",
-        extremumSlip    = 0.5f,
-        extremumValue   = 0.7f,
-        asymptoteSlip   = 0.9f,
-        asymptoteValue  = 0.5f,
-        sidewaysStiffness = 0.6f,
-        tcsSlipLimit    = 0.55f
-    }
-    };
+    private SurfaceFriction[] surfaceProfiles;
 
     [Header("traction control")]
     [SerializeField] private bool tcsEnabled = true;
@@ -81,8 +49,12 @@ public class CarController : MonoBehaviour
 
     private int activeWheels = 0;
     private float smoothedWheelRPM = 0f;
-
     private SurfaceFriction[] wheelSurfaces;
+
+    //cache terrain - its static
+    private Terrain _terrain;
+    private TerrainData _terrainData;
+    private Vector3 _terrainPos;
 
     private void Start()
     {
@@ -94,13 +66,23 @@ public class CarController : MonoBehaviour
         InputManager.Instance.OnGearDownEvent += () => engine.ShiftDown(GetAverageDrivenWheelRPM());
 
         activeWheels = 0;
-
         wheelSurfaces = new SurfaceFriction[wheels.Length];
+
         for (int i = 0; i < wheels.Length; i++)
         {
             if (IsWheelInDrivetrain(wheels[i])) activeWheels++;
             wheelSurfaces[i] = surfaceProfiles[0];
         }
+
+        CacheTerrain();
+    }
+
+    private void CacheTerrain()
+    {
+        _terrain = Terrain.activeTerrain;
+        if (_terrain == null) return;
+        _terrainData = _terrain.terrainData;
+        _terrainPos = _terrain.transform.position;
     }
 
     private void FixedUpdate()
@@ -116,8 +98,8 @@ public class CarController : MonoBehaviour
             {
                 float unsignedAngle = Vector3.Angle(hit.normal, Vector3.up);
                 float sign = -Mathf.Sign(transform.forward.y);
-                float rawSlope = unsignedAngle * sign;
-                engine.groundSlopeAngle = Mathf.Lerp(engine.groundSlopeAngle, rawSlope, Time.fixedDeltaTime * 10f);
+                engine.groundSlopeAngle = Mathf.Lerp(engine.groundSlopeAngle,
+                    unsignedAngle * sign, Time.fixedDeltaTime * 10f);
                 break;
             }
         }
@@ -154,7 +136,6 @@ public class CarController : MonoBehaviour
 
     //average RPM across all driven wheels - gives engine a realistic load signal
     //using avg rather than max prevents a single spinning wheel from inflating the reading
-
     private float GetAverageDrivenWheelRPM()
     {
         float total = 0f;
@@ -169,7 +150,6 @@ public class CarController : MonoBehaviour
 
         float raw = count > 0 ? total / count : 0f;
         smoothedWheelRPM = Mathf.Lerp(smoothedWheelRPM, raw, Time.fixedDeltaTime * 15f);
-
         return smoothedWheelRPM;
     }
 
@@ -178,15 +158,64 @@ public class CarController : MonoBehaviour
         WheelHit hit;
         if (!wheel.GetGroundHit(out hit)) return surfaceProfiles[0];
 
-        string mat = hit.collider.sharedMaterial != null
-            ? hit.collider.sharedMaterial.name : "";
+        //sample terrain atcontact point
+        if (_terrain != null && hit.collider == _terrain.GetComponent<Collider>())
+        {
+            int layerIndex = GetDominantTerrainLayer(hit.point);
+            if (layerIndex >= 0 && layerIndex < _terrainData.terrainLayers.Length)
+            {
+                string layerName = _terrainData.terrainLayers[layerIndex].name;
+                for (int i = surfaceProfiles.Length - 1; i >= 0; i--)
+                {
+                    if (layerName.IndexOf(surfaceProfiles[i].materialTag,
+                        StringComparison.OrdinalIgnoreCase) >= 0)
+                        return surfaceProfiles[i];
+                }
+            }
+        }
 
+        //non-terrain obj - uses physics material
+        string mat = hit.collider.sharedMaterial != null ? hit.collider.sharedMaterial.name : "";
         for (int i = surfaceProfiles.Length - 1; i >= 0; i--)
         {
-            if (mat.Contains(surfaceProfiles[i].materialTag))
+            if (mat.IndexOf(surfaceProfiles[i].materialTag,
+                StringComparison.OrdinalIgnoreCase) >= 0)
                 return surfaceProfiles[i];
         }
-        return surfaceProfiles[0]; // tarmac fallback
+
+        return surfaceProfiles[0];
+    }
+
+    //sample nearest texel at sample pos
+    private int GetDominantTerrainLayer(Vector3 worldPos)
+    {
+        if (_terrainData == null) return 0;
+
+        //world pos to normalised terrain
+        float normX = (worldPos.x - _terrainPos.x) / _terrainData.size.x;
+        float normZ = (worldPos.z - _terrainPos.z) / _terrainData.size.z;
+
+        normX = Mathf.Clamp01(normX);
+        normZ = Mathf.Clamp01(normZ);
+
+        //alphamap coords - z maps to y axis in alphamap
+        int mapX = Mathf.FloorToInt(normX * (_terrainData.alphamapWidth - 1));
+        int mapZ = Mathf.FloorToInt(normZ * (_terrainData.alphamapHeight - 1));
+
+        float[,,] alphaMap = _terrainData.GetAlphamaps(mapX, mapZ, 1, 1);
+
+        int dominant = 0;
+        float max = 0f;
+        for (int layer = 0; layer < alphaMap.GetLength(2); layer++)
+        {
+            if (alphaMap[0, 0, layer] > max)
+            {
+                max = alphaMap[0, 0, layer];
+                dominant = layer;
+            }
+        }
+
+        return dominant;
     }
 
     private void UpdateWheelFriction(int wheelIndex, float carSpeedMS)
@@ -196,18 +225,16 @@ public class CarController : MonoBehaviour
         if (!wheel.GetGroundHit(out hit)) return;
 
         SurfaceFriction surf = GetSurfaceProfile(wheel);
-        wheelSurfaces[wheelIndex] = surf; // store for TCS
+        wheelSurfaces[wheelIndex] = surf;
 
-        // launch blend - 1.0 at standstill, 0.0 at launchBlendSpeed
         float launchBlend = 1f - Mathf.Clamp01(Mathf.Abs(carSpeedMS) / launchBlendSpeed);
 
         WheelFrictionCurve fwd = wheel.forwardFriction;
-        // set from surface profile directly - no lerp from unknown state
         fwd.extremumSlip = surf.extremumSlip - (launchSlipReduction * launchBlend);
         fwd.extremumValue = surf.extremumValue + (launchExtrumumBoost * launchBlend);
         fwd.asymptoteSlip = surf.asymptoteSlip;
         fwd.asymptoteValue = surf.asymptoteValue;
-        fwd.stiffness = 1f; // stiffness controlled by curve values, not multiplier
+        fwd.stiffness = 1f;
         wheel.forwardFriction = fwd;
 
         WheelFrictionCurve side = wheel.sidewaysFriction;
@@ -223,7 +250,7 @@ public class CarController : MonoBehaviour
             return;
         }
 
-        float worstSlipRatio = 0f; // 0 = no excess slip, 1 = fully over limit
+        float worstSlipRatio = 0f;
 
         for (int i = 0; i < wheels.Length; i++)
         {
@@ -233,8 +260,6 @@ public class CarController : MonoBehaviour
 
             float slip = Mathf.Abs(hit.forwardSlip);
             float limit = wheelSurfaces[i].tcsSlipLimit;
-
-            // normalise slip against this surface's threshold
             float ratio = Mathf.Clamp01((slip - limit) / limit);
             if (ratio > worstSlipRatio) worstSlipRatio = ratio;
         }
@@ -258,8 +283,7 @@ public class CarController : MonoBehaviour
         if (inGear && gasInput < 0.05f && speedMS > 0.5f)
         {
             //scale with gears - lower gear = more engine braking
-            float gearFactor = Mathf.Clamp01(engine.drivetrainRPM /
-                Mathf.Max(engine.currentRPM, 1f));
+            float gearFactor = Mathf.Clamp01(engine.drivetrainRPM / Mathf.Max(engine.currentRPM, 1f));
             float engineBrake = engineBrakingForce * gearFactor * (1f - gasInput);
 
             //low speed idle creep - fade engine braking out so it doesnt hold car at rest

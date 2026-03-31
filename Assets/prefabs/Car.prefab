@@ -2900,6 +2900,13 @@ MonoBehaviour:
     asymptoteValue: 0.5
     sidewaysStiffness: 0.6
     tcsSlipLimit: 2
+  - materialTag: Grass
+    extremumSlip: 0.4
+    extremumValue: 1
+    asymptoteSlip: 0.75
+    asymptoteValue: 0.75
+    sidewaysStiffness: 0.85
+    tcsSlipLimit: 0.55
   tcsEnabled: 1
   tcsMinSpeed: 4
   tcsResponseSpeed: 2

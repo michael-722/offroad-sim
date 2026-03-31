@@ -144,9 +144,7 @@ public class LessonManager : MonoBehaviour
 
         _phase = LessonPhase.Assessment;
         _assessmentScore = 100f;
-        _assessmentTimer = _currentLesson.assessmentTimeLimit > 0f
-                           ? _currentLesson.assessmentTimeLimit
-                           : float.MaxValue;
+        _assessmentTimer = _currentLesson.assessmentTimeLimit > 0f ? _currentLesson.assessmentTimeLimit : float.MaxValue;
 
         if (hudObjectiveText != null) hudObjectiveText.text = _currentLesson.assessmentObjective;
         if (hudPassScoreText != null) hudPassScoreText.text = $"Pass: {_currentLesson.passingScore:F0}";
@@ -245,7 +243,7 @@ public class LessonManager : MonoBehaviour
         string status = result.passed ? "<color=#66FF66>PASSED</color>" : "<color=#FF6666>FAILED</color>";
 
         if (resultsTitleText != null)
-            resultsTitleText.text = $"{_currentLesson.title}  —  {status}";
+            resultsTitleText.text = $"{_currentLesson.title} {status}";
 
         if (resultsBodyText != null)
             resultsBodyText.text =

@@ -19,7 +19,5 @@ MonoBehaviour:
   assessmentObjective: 'Reverse up the slope without losing control or stalling. '
   assessmentTimeLimit: 90
   passingScore: 80
-  prerequisites:
-  - {fileID: 11400000, guid: e3c4fb4b437612c41a4a39f26975e166, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 

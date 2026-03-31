@@ -1,0 +1,18 @@
+basic_01,Vehicle Familiarisation,Stay within the cones and reach the goal. ,Complete a slow lap of the marked course staying within the cones.,0,60
+basic_02,Moving off and Stopping,Come to a complete stop within each stopping area before moving off to the next.,Complete three start stop cycles inside the marked zones.,90,65
+basic_03,Gentle Ascents,,Climb up the slope without losing control or stalling.,60,65
+basic_04,Gentle Descents,,Traverse down the slop without losing control or stalling.,60,65
+basic_05,Traction Awareness,,Navigate a mix of surfaces while causing minimal loss of traction.,120,65
+basic_06,Hazard Reading,,Navigate the obstacles without becoming stuck. ,120,65
+basic_07,Emergency Stop,,Perform three emergancy stops after getting up to speed.,60,70
+higher_01,Steep Ascents,,Climb the slope without losing control or stalling.,90,80
+higher_02,Steep Descents,,Descent the slope without losing control or stalling.,90,80
+higher_03,Failed Ascent Recovery,,Reverse back down from the starting point on the slope without losing control.,90,80
+higher_04,Self Recovery,,Recover from being stuck.,90,80
+higher_05,Reverse Ascents,,Reverse up the slope without losing control or stalling. ,90,80
+higher_06,Extreme Side Slope,,Traverse along and up the slope without losing control, rolling over or stalling.,90,80
+higher_07,Night Driving,,Complete the set out course.,90,80
+standard_01,Moderate Ascents,,Climb the slope without stalling or losing control.,90,75
+standard_02,Moderate Descents,,Descent the slope without losing control or stalling,90,75
+standard_03,Ditches and Rute,,Cross all the ditches and rutts without getting stuck.,120,75
+standard_04,Side Slope,,Traverse along and up the slope without losing control, slipping or stalling.,90,75

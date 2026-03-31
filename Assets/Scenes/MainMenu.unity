@@ -4005,7 +4005,6 @@ MonoBehaviour:
   lessonRowPrefab: {fileID: 2446519323325224613, guid: 933ae45f1ed7aa8478267d5a89f69d54, type: 3}
   lessonTitle: {fileID: 1895404607}
   lessonBordaUnit: {fileID: 657104781}
-  lessonBriefing: {fileID: 0}
   lessonObjective: {fileID: 606055159}
   lessonTimeLimit: {fileID: 559860570}
   lessonPassingScore: {fileID: 717768252}

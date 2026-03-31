@@ -19,7 +19,5 @@ MonoBehaviour:
   assessmentObjective: Traverse down the slop without losing control or stalling.
   assessmentTimeLimit: 60
   passingScore: 65
-  prerequisites:
-  - {fileID: 11400000, guid: a0199037f73decb4abf417f780577868, type: 2}
+  prerequisites: []
   icon: {fileID: 0}
-  shortDescription: 
