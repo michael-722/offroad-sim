@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
+  m_Name: basic_05
+  m_EditorClassIdentifier: 
+  lessonId: basic_05
+  title: Traction Awareness
+  bordaUnit: Unit 5 - Traction Awareness
+  briefingText: 
+  assessmentObjective: Navigate a mix of surfaces while causing minimal loss of traction.
+  assessmentTimeLimit: 120
+  passingScore: 65
+  prerequisites:
+  - {fileID: 11400000, guid: f0d289f20c8f4ec4a91f18f2acfb14a5, type: 2}
+  icon: {fileID: 0}
+  shortDescription: 

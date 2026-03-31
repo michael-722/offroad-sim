@@ -29,7 +29,6 @@ public class MenuController : MonoBehaviour
     [Header("lesson details")]
     [SerializeField] private TMP_Text lessonTitle;
     [SerializeField] private TMP_Text lessonBordaUnit;
-    [SerializeField] private TMP_Text lessonBriefing;
     [SerializeField] private TMP_Text lessonObjective;
     [SerializeField] private TMP_Text lessonTimeLimit;
     [SerializeField] private TMP_Text lessonPassingScore;
@@ -133,15 +132,16 @@ public class MenuController : MonoBehaviour
             if (ui.descText != null) ui.descText.text = tier.description;
             if (ui.progressText != null) ui.progressText.text = $"{tier.CompletedLessonCount()} / {tier.lessons.Count}";
             if (ui.lockIcon != null) ui.lockIcon.SetActive(!unlocked);
-            if (ui.button != null) ui.button.interactable = unlocked;
 
             //set btn on click
-            int capturedIndex = i;
+            int index = i;
             if (ui.button != null)
             {
                 ui.button.onClick.RemoveAllListeners();
-                ui.button.onClick.AddListener(() => ShowLessonList(tiers[capturedIndex]));
+                ui.button.onClick.AddListener(() => ShowLessonList(tiers[index]));
             }
+
+            if (ui.button != null) ui.button.interactable = unlocked;
         }
     }
 
@@ -173,13 +173,12 @@ public class MenuController : MonoBehaviour
 
             //set data for each lesson
             if (row.titleText != null) row.titleText.text = lesson.title;
-            if (row.shortDescText != null) row.shortDescText.text = lesson.shortDescription;
             if (row.statusText != null)
             {
                 if (!unlocked)
                     row.statusText.text = "<color=#888888>Locked</color>";
                 else if (lesson.IsComplete)
-                    row.statusText.text = $"<color=#66FF66>?  {lesson.BestScore:F0}</color>";
+                    row.statusText.text = $"Best Score: {lesson.BestScore:F0}";
                 else
                     row.statusText.text = "Not attempted";
             }
@@ -202,7 +201,6 @@ public class MenuController : MonoBehaviour
 
         if (lessonTitle != null) lessonTitle.text = lesson.title;
         if (lessonBordaUnit != null) lessonBordaUnit.text = lesson.bordaUnit;
-        if (lessonBriefing != null) lessonBriefing.text = lesson.briefingText;
         if (lessonObjective != null) lessonObjective.text = lesson.assessmentObjective;
         if (lessonPassingScore != null) lessonPassingScore.text = $"Pass mark: {lesson.passingScore:F0}";
         if (lessonTimeLimit != null) lessonTimeLimit.text = lesson.assessmentTimeLimit > 0f ? $"Time limit: {lesson.assessmentTimeLimit:F0}s" : "Time limit: None";

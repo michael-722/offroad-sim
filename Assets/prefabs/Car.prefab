@@ -2801,7 +2801,7 @@ GameObject:
   - component: {fileID: 4841726253112853153}
   m_Layer: 0
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2878,9 +2878,6 @@ MonoBehaviour:
     isFrontWheel: 0
   maxSteerAngle: 35
   brakeForce: 3000
-  rockStiffness: 1
-  dirtStiffness: 0.7
-  mudStiffness: 0.3
   surfaceProfiles:
   - materialTag: Rock
     extremumSlip: 0.25

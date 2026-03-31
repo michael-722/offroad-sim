@@ -11,13 +11,21 @@ public class LessonManager : MonoBehaviour
 
     [SerializeField] private List<SkillTier> tiers = new List<SkillTier>();
 
-    [Header("training UI")]
-    [SerializeField] private GameObject trainingPanel;
-    [SerializeField] private TMP_Text titleText;
-    [SerializeField] private TMP_Text phaseText;
-    [SerializeField] private TMP_Text instructionText;
-    [SerializeField] private TMP_Text timerText;
-    [SerializeField] private TMP_Text scoreText;
+    [Header("car")]
+    [SerializeField] private Transform car;
+
+    [Header("briefing UI")]
+    [SerializeField] private GameObject briefingPanel;
+    [SerializeField] private TMP_Text briefingTitleText;
+    [SerializeField] private TMP_Text briefingBodyText;
+    [SerializeField] private TMP_Text briefingCountdownText;
+
+    [Header("assessment HUD")]
+    [SerializeField] private GameObject hudPanel;
+    [SerializeField] private TMP_Text hudTimerText;
+    [SerializeField] private TMP_Text hudScoreText;
+    [SerializeField] private TMP_Text hudPassScoreText;
+    [SerializeField] private TMP_Text hudObjectiveText;
 
     [Header("results UI")]
     [SerializeField] private GameObject resultsPanel;
@@ -25,8 +33,7 @@ public class LessonManager : MonoBehaviour
     [SerializeField] private TMP_Text resultsBodyText;
 
     [Header("timing")]
-    [SerializeField] private float briefingDuration = 6f;
-    [SerializeField] private float practiceMinDuration = 15f;
+    [SerializeField] private float briefingCountdownFrom = 5f;
     [SerializeField] private float resultDisplayTime = 4f;
 
     [Header("events")]
@@ -34,6 +41,7 @@ public class LessonManager : MonoBehaviour
     public UnityEvent<SkillTier> OnTierUnlocked;
 
     private Lesson _currentLesson;
+    private LessonLayout _currentLayout;
     private LessonPhase _phase = LessonPhase.Inactive;
     private float _assessmentTimer;
     private float _assessmentScore;
@@ -68,6 +76,25 @@ public class LessonManager : MonoBehaviour
         }
 
         _currentLesson = lesson;
+
+        _currentLayout = LessonLayoutRegister.Instance?.Get(lesson.lessonId);
+        if (_currentLayout == null)
+            Debug.LogWarning($"no layout registered for lesson '{lesson.lessonId}' name '{lesson.name}'");
+
+        LessonLayoutRegister.Instance?.DeactivateAll();
+        _currentLayout?.Activate();
+
+        if (_currentLayout?.spawnPoint != null && car != null)
+        {
+            var rb = car.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            car.SetPositionAndRotation(_currentLayout.spawnPoint.position, _currentLayout.spawnPoint.rotation);
+        }
+
         StartCoroutine(LessonRoutine());
     }
 
@@ -78,8 +105,8 @@ public class LessonManager : MonoBehaviour
         _assessmentScore = Mathf.Lerp(_assessmentScore, score, weight * Time.deltaTime);
         _assessmentScore = Mathf.Clamp(_assessmentScore, 0f, 100f);
 
-        if (scoreText != null)
-            scoreText.text = $"Score: {_assessmentScore:F0}";
+        if (hudScoreText != null)
+            hudScoreText.text = $"Score: {_assessmentScore:F0}";
     }
 
     public void TriggerAssessmentEnd(bool passed)
@@ -93,61 +120,48 @@ public class LessonManager : MonoBehaviour
 
     private IEnumerator LessonRoutine()
     {
-        trainingPanel.SetActive(true);
+        SetPanels(briefing: false, hud: false, results: false);
 
-        if (resultsPanel != null) resultsPanel.SetActive(false);
-        if (timerText != null) timerText.gameObject.SetActive(false);
-        if (scoreText != null) scoreText.gameObject.SetActive(false);
-
-        //briefing - auto advances after duration or input
+        //show briefing with live countdown
         _phase = LessonPhase.Briefing;
-        SetTitle(_currentLesson.title);
-        SetPhase("Briefing");
-        SetInstruction(_currentLesson.briefingText);
 
-        float briefTimer = 0f;
-        while (briefTimer < briefingDuration && !AnyGameplayInput())
+        if (briefingTitleText != null) briefingTitleText.text = _currentLesson.title;
+        if (briefingBodyText != null) briefingBodyText.text = _currentLesson.briefingText;
+
+        briefingPanel?.SetActive(true);
+
+        float countdown = briefingCountdownFrom;
+        while (countdown > 0f)
         {
-            briefTimer += Time.deltaTime;
+            countdown -= Time.deltaTime;
+            if (briefingCountdownText != null)
+                briefingCountdownText.text = $"Starting in {Mathf.CeilToInt(countdown)}...";
             yield return null;
         }
 
-        yield return null; //absorb input frame
+        //countdown done - swap to hud and begin assessment
+        briefingPanel?.SetActive(false);
 
-        //practice - player drives freely
-        _phase = LessonPhase.Practice;
-        SetPhase("Practice");
-        SetInstruction(
-            $"{_currentLesson.assessmentObjective}\n\n" +
-            $"(Practice time: {practiceMinDuration:F0}s — then press any input to begin assessment)"
-        );
-
-        float practiceTimer = 0f;
-        while (true)
-        {
-            practiceTimer += Time.deltaTime;
-            if (practiceTimer >= practiceMinDuration && AnyGameplayInput())
-                break;
-            yield return null;
-        }
-
-        yield return null;//absorb input frame
-
-        //assessment - runs until assessment end is called or time runs out
         _phase = LessonPhase.Assessment;
         _assessmentScore = 100f;
-        _assessmentTimer = _currentLesson.assessmentTimeLimit > 0f ? _currentLesson.assessmentTimeLimit : float.MaxValue;
+        _assessmentTimer = _currentLesson.assessmentTimeLimit > 0f
+                           ? _currentLesson.assessmentTimeLimit
+                           : float.MaxValue;
 
-        SetPhase("Assessment");
-        SetInstruction(_currentLesson.assessmentObjective);
+        if (hudObjectiveText != null) hudObjectiveText.text = _currentLesson.assessmentObjective;
+        if (hudPassScoreText != null) hudPassScoreText.text = $"Pass: {_currentLesson.passingScore:F0}";
+        if (hudScoreText != null) hudScoreText.text = "Score: 100";
 
-        if (timerText != null)
-            timerText.gameObject.SetActive(_currentLesson.assessmentTimeLimit > 0f);
+        hudPanel?.SetActive(true);
+
+        //hide timer if this lesson has no time limit
+        if (hudTimerText != null)
+            hudTimerText.gameObject.SetActive(_currentLesson.assessmentTimeLimit > 0f);
 
         while (_phase == LessonPhase.Assessment)
         {
             _assessmentTimer -= Time.deltaTime;
-            UpdateTimerUI();
+            UpdateTimerHUD();
 
             if (_currentLesson.assessmentTimeLimit > 0f && _assessmentTimer <= 0f)
             {
@@ -164,6 +178,9 @@ public class LessonManager : MonoBehaviour
     {
         _phase = LessonPhase.Result;
 
+        //disarm all triggers so they cant fire after assessment ends
+        LessonLayoutRegister.Instance?.DeactivateAll();
+
         bool passed = objectiveReached && _assessmentScore >= _currentLesson.passingScore;
 
         _currentLesson.SaveResult(passed, _assessmentScore);
@@ -178,15 +195,17 @@ public class LessonManager : MonoBehaviour
         };
 
         CheckTierUnlocks();
+
+        SetPanels(briefing: false, hud: false, results: true);
         ShowResults(result);
         OnLessonComplete?.Invoke(result);
 
         yield return new WaitForSeconds(resultDisplayTime);
 
-        trainingPanel.SetActive(false);
-        if (resultsPanel != null) resultsPanel.SetActive(false);
-        if (timerText != null) timerText.gameObject.SetActive(false);
+        SetPanels(briefing: false, hud: false, results: false);
 
+        _currentLayout?.Deactivate();
+        _currentLayout = null;
         _currentLesson = null;
         _phase = LessonPhase.Inactive;
     }
@@ -204,24 +223,25 @@ public class LessonManager : MonoBehaviour
         }
     }
 
-    private void SetTitle(string text) { if (titleText != null) titleText.text = text; }
-    private void SetPhase(string text) { if (phaseText != null) phaseText.text = text; }
-    private void SetInstruction(string text) { if (instructionText != null) instructionText.text = text; }
-
-    private void UpdateTimerUI()
+    private void SetPanels(bool briefing, bool hud, bool results)
     {
-        if (timerText == null) return;
+        briefingPanel?.SetActive(briefing);
+        hudPanel?.SetActive(hud);
+        resultsPanel?.SetActive(results);
+    }
+
+    private void UpdateTimerHUD()
+    {
+        if (hudTimerText == null) return;
         float t = Mathf.Max(_assessmentTimer, 0f);
         int mins = Mathf.FloorToInt(t / 60f);
         int secs = Mathf.FloorToInt(t % 60f);
-        timerText.text = $"{mins:00}:{secs:00}";
-        timerText.color = t < 15f ? Color.red : Color.white;
+        hudTimerText.text = $"{mins:00}:{secs:00}";
+        hudTimerText.color = t < 15f ? Color.red : Color.white;
     }
 
     private void ShowResults(LessonResult result)
     {
-        if (resultsPanel != null) resultsPanel.SetActive(true);
-
         string status = result.passed ? "<color=#66FF66>PASSED</color>" : "<color=#FF6666>FAILED</color>";
 
         if (resultsTitleText != null)
@@ -230,34 +250,12 @@ public class LessonManager : MonoBehaviour
         if (resultsBodyText != null)
             resultsBodyText.text =
                 $"Score     {result.score:F0} / 100\n" +
-                $"Required  {_currentLesson.passingScore:F0}\n" +
                 $"Time      {result.timeSeconds:F1}s\n" +
                 $"Attempts  {result.attempts}";
     }
-
-    //any keyboard key or gamepad button/axis - not mouse=======need to test with wheel
-    private bool AnyGameplayInput()
-    {
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
-            return true;
-
-        if (Gamepad.current != null)
-        {
-            foreach (var control in Gamepad.current.allControls)
-            {
-                if (control is UnityEngine.InputSystem.Controls.ButtonControl btn && btn.wasPressedThisFrame)
-                    return true;
-
-                if (control is UnityEngine.InputSystem.Controls.AxisControl axis && Mathf.Abs(axis.ReadValue()) > 0.3f)
-                    return true;
-            }
-        }
-
-        return false;
-    }
 }
 
-public enum LessonPhase { Inactive, Briefing, Practice, Assessment, Result }
+public enum LessonPhase { Inactive, Briefing, Assessment, Result }
 
 [System.Serializable]
 public class LessonResult

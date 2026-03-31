@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
+  m_Name: higher_01
+  m_EditorClassIdentifier: 
+  lessonId: higher_01
+  title: Steep Ascents
+  bordaUnit: Unit 12 - Steep Ascents with traction loss
+  briefingText: 
+  assessmentObjective: Climb the slope without losing control or stalling.
+  assessmentTimeLimit: 90
+  passingScore: 80
+  prerequisites: []
+  icon: {fileID: 0}
+  shortDescription: 

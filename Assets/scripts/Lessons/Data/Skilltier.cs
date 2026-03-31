@@ -13,7 +13,7 @@ public class SkillTier : ScriptableObject
 
     [Header("unlock")]
     public bool unlockedByDefault = false;
-    public SkillTier prerequisiteTier;
+    public List<SkillTier> prerequisiteTier;
 
     [Header("Lessons")]
     public List<Lesson> lessons = new List<Lesson>();//lesson appear in order of list
@@ -50,8 +50,12 @@ public class SkillTier : ScriptableObject
         if (IsUnlocked()) return false;
 
         //check prerqusite tier is fully complete
-        if (prerequisiteTier != null && !prerequisiteTier.IsFullyComplete())
-            return false;
+        if (prerequisiteTier != null)
+        {
+            for(int i = 0; i < prerequisiteTier.Count; i++) 
+                if (!prerequisiteTier[i].IsFullyComplete())
+                    return false;
+        }
 
         PlayerPrefs.SetInt(PrefKeyUnlocked, 1);
         PlayerPrefs.Save();

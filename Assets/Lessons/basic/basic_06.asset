@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
+  m_Name: basic_06
+  m_EditorClassIdentifier: 
+  lessonId: basic_06
+  title: Hazard Reading
+  bordaUnit: Unit 6 - Basic Hazard Reading
+  briefingText: 
+  assessmentObjective: 'Navigate the obstacles without becoming stuck. '
+  assessmentTimeLimit: 120
+  passingScore: 65
+  prerequisites:
+  - {fileID: 11400000, guid: 40c25987426f515469257790efb926f8, type: 2}
+  icon: {fileID: 0}
+  shortDescription: 

@@ -22,9 +22,6 @@ public class Lesson : ScriptableObject
     [Header("lesson icon - optional")]
     public Sprite icon;
 
-    [Header("description")]
-    [TextArea(1, 3)] public string shortDescription;
-
     public string PrefKeyCompleted => $"SkillLesson_{lessonId}_Completed";
     public string PrefKeyBestScore => $"SkillLesson_{lessonId}_BestScore";
     public string PrefKeyAttempts => $"SkillLesson_{lessonId}_Attempts";
@@ -64,7 +61,7 @@ public class Lesson : ScriptableObject
         PlayerPrefs.Save();
     }
 
-    //saftey when creating scriptable objs
+    //saftey when editing scriptable objs
 #if UNITY_EDITOR
     private void OnValidate()
     {

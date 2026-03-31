@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
+  m_Name: basic_07
+  m_EditorClassIdentifier: 
+  lessonId: basic_07
+  title: Emergency Stop
+  bordaUnit: Unit 7 - Emergency Stop
+  briefingText: 
+  assessmentObjective: Perform three emergancy stops after getting up to speed.
+  assessmentTimeLimit: 60
+  passingScore: 70
+  prerequisites:
+  - {fileID: 11400000, guid: 84af1f0011296154f9392b50a8b4e960, type: 2}
+  icon: {fileID: 0}
+  shortDescription: 

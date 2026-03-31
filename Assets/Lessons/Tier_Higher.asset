@@ -18,5 +18,14 @@ MonoBehaviour:
     and difficult situations
   icon: {fileID: 0}
   unlockedByDefault: 0
-  prerequisiteTier: {fileID: 11400000, guid: 027cec8451169264290b5e5a341e0555, type: 2}
-  lessons: []
+  prerequisiteTier:
+  - {fileID: 11400000, guid: c5f1a81ad08a8804db4908d781d5b1a4, type: 2}
+  - {fileID: 11400000, guid: 027cec8451169264290b5e5a341e0555, type: 2}
+  lessons:
+  - {fileID: 11400000, guid: 01c018e6dc82acd46aa03fc692db0e3f, type: 2}
+  - {fileID: 11400000, guid: f7be2c410aaec364393c1ede88c049d6, type: 2}
+  - {fileID: 11400000, guid: 44fabfa67bd1e5a44a03b211188ccba7, type: 2}
+  - {fileID: 11400000, guid: e3c4fb4b437612c41a4a39f26975e166, type: 2}
+  - {fileID: 11400000, guid: 4eb0e35973bc3d645971580e353924c7, type: 2}
+  - {fileID: 11400000, guid: 3a03867c847adff40af70dffbf02a97a, type: 2}
+  - {fileID: 11400000, guid: 018574db916e1e54b8328e16f169cfd8, type: 2}

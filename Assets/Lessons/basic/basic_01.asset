@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
+  m_Name: basic_01
+  m_EditorClassIdentifier: 
+  lessonId: basic_01
+  title: Vehicle Familiarisation
+  bordaUnit: Unit 1 - Vehicle Familiarisation and Controls
+  briefingText: Breifing text test
+  assessmentObjective: Complete a slow lap of the marked course staying within the
+    cones.
+  assessmentTimeLimit: 0
+  passingScore: 60
+  prerequisites: []
+  icon: {fileID: 0}
+  shortDescription: short description test
