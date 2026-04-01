@@ -17,7 +17,8 @@ MonoBehaviour:
   bordaUnit: Unit 2 - Moving off and Stopping on flat ground
   briefingText: Come to a complete stop within each stopping area before moving off
     to the next.
-  assessmentObjective: Complete three start stop cycles inside the marked zones.
+  assessmentObjective: Start from stationary and accelerate and then stop inside
+    the marked zone.
   assessmentTimeLimit: 90
   passingScore: 65
   prerequisites: []
