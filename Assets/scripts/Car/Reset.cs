@@ -58,7 +58,7 @@ public class Reset : MonoBehaviour
         }
     }
 
-    private void DoReset()
+    public void DoReset()
     {
         transform.position = updatedPos;
         transform.rotation = updatedRot;

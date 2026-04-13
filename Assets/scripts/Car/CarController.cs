@@ -56,6 +56,10 @@ public class CarController : MonoBehaviour
     private TerrainData _terrainData;
     private Vector3 _terrainPos;
 
+    private bool canDrive = false;
+
+    public bool SetCanDrive(bool state) => canDrive = state;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -75,6 +79,18 @@ public class CarController : MonoBehaviour
         }
 
         CacheTerrain();
+    }
+
+    private void OnDestroy()
+    {
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.OnAccelerateEvent -= (val) => gasInput = val;
+            InputManager.Instance.OnBrakeEvent -= (val) => brakeInput = val;
+            InputManager.Instance.OnSteeringEvent -= (val) => steerInput = val;
+            InputManager.Instance.OnGearUpEvent -= () => engine.ShiftUp(GetAverageDrivenWheelRPM());
+            InputManager.Instance.OnGearDownEvent -= () => engine.ShiftDown(GetAverageDrivenWheelRPM());
+        }
     }
 
     private void CacheTerrain()
@@ -106,7 +122,7 @@ public class CarController : MonoBehaviour
 
         //engine updating
         float avgDrivenWheelRPM = GetAverageDrivenWheelRPM();
-        float totalOutputTorque = engine.UpdateEngine(gasInput, avgDrivenWheelRPM);
+        float totalOutputTorque = engine.UpdateEngine(canDrive ? gasInput : 0, avgDrivenWheelRPM);
 
         //traction control
         if (tcsEnabled) ApplyTractionControl(speedMS);

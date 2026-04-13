@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class LessonBoundary : MonoBehaviour
 {
-    [Tooltip("seconds the player can be outside before failing - 0 = instant fail")]
     public float graceSeconds = 2f;
 
-    [Tooltip("score penalty applied each second the player is outside (0 = no penalty, just tracking)")]
     [Range(0f, 100f)]
     public float penaltyPerSecond = 10f;
 
@@ -35,9 +33,7 @@ public class LessonBoundary : MonoBehaviour
         //apply score penalty each second while outside
         if (penaltyPerSecond > 0f)
         {
-            float currentScore = LessonManager.Instance != null
-                ? Mathf.Max(0f, 100f - (_outsideTimer * penaltyPerSecond))
-                : 0f;
+            float currentScore = LessonManager.Instance != null ? Mathf.Max(0f, 100f - (_outsideTimer * penaltyPerSecond)) : 0f;
             LessonManager.Instance?.ReportAssessmentScore(currentScore, 2f);
         }
 

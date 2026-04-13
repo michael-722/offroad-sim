@@ -138,6 +138,8 @@ public class LessonManager : MonoBehaviour
                 briefingCountdownText.text = $"Starting in {Mathf.CeilToInt(countdown)}...";
             yield return null;
         }
+        //enable driving
+        FindFirstObjectByType<CarController>().SetCanDrive(true);
 
         //countdown done - swap to hud and begin assessment
         briefingPanel?.SetActive(false);
@@ -247,9 +249,30 @@ public class LessonManager : MonoBehaviour
 
         if (resultsBodyText != null)
             resultsBodyText.text =
-                $"Score     {result.score:F0} / 100\n" +
-                $"Time      {result.timeSeconds:F1}s\n" +
-                $"Attempts  {result.attempts}";
+                $"Score {result.score:F0} / 100\n" +
+                $"Time {result.timeSeconds:F1}s\n" +
+                $"Attempts {result.attempts}";
+    }
+
+    public void ResetLessonState()
+    {
+        StopAllCoroutines();
+        SetPanels(briefing: false, hud: false, results: false);
+
+        if (_currentLayout != null)
+        {
+            _currentLayout.Deactivate();
+            _currentLayout = null;
+        }
+
+        LessonLayoutRegister.Instance?.DeactivateAll();
+
+        _currentLesson = null;
+        _assessmentTimer = 0f;
+        _assessmentScore = 0f;
+        _phase = LessonPhase.Inactive;
+
+        Debug.Log("LessonManager has been fully reset.");
     }
 }
 
