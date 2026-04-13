@@ -15,6 +15,8 @@ public struct SurfaceFriction
 
 public class CarController : MonoBehaviour
 {
+    [SerializeField] private bool canDrive = false;
+
     [SerializeField] private EngineSimulator engine;
     [SerializeField] private WheelData[] wheels;
 
@@ -55,8 +57,6 @@ public class CarController : MonoBehaviour
     private Terrain _terrain;
     private TerrainData _terrainData;
     private Vector3 _terrainPos;
-
-    private bool canDrive = false;
 
     public bool SetCanDrive(bool state) => canDrive = state;
 
@@ -139,7 +139,7 @@ public class CarController : MonoBehaviour
                 wheel.collider.steerAngle = steerInput * maxSteerAngle;
 
             //negative bc wheel colliders are backwards in game space
-            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel : 0f;
+            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel: 0f;
             wheel.collider.brakeTorque = brakeInput * brakeForce;
 
             //update friction based on surface and current speed
@@ -152,7 +152,7 @@ public class CarController : MonoBehaviour
 
     //average RPM across all driven wheels - gives engine a realistic load signal
     //using avg rather than max prevents a single spinning wheel from inflating the reading
-    private float GetAverageDrivenWheelRPM()
+    public float GetAverageDrivenWheelRPM()
     {
         float total = 0f;
         int count = 0;
@@ -165,7 +165,7 @@ public class CarController : MonoBehaviour
         }
 
         float raw = count > 0 ? total / count : 0f;
-        smoothedWheelRPM = Mathf.Lerp(smoothedWheelRPM, raw, Time.fixedDeltaTime * 15f);
+        smoothedWheelRPM = Mathf.Lerp(smoothedWheelRPM, raw, Time.fixedDeltaTime * 10f);
         return smoothedWheelRPM;
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 
 public class TutorialController : MonoBehaviour
 {
@@ -206,6 +207,7 @@ public class TutorialController : MonoBehaviour
     {
         foreach (var device in InputSystem.devices)
         {
+            Debug.Log(device.name);
             if (device is Keyboard || device is Mouse)
             {
                 if (IsKeyboardOrMouseActive())
@@ -215,21 +217,16 @@ public class TutorialController : MonoBehaviour
                 }
             }
 
-            if (device is UnityEngine.InputSystem.HID.HID hid)
-            {
-                bool isWheel = hid.description.product.IndexOf("wheel", StringComparison.OrdinalIgnoreCase) >= 0
-                    || hid.description.product.IndexOf("moza", StringComparison.OrdinalIgnoreCase) >= 0;
-
-                if (isWheel && IsDeviceActive(device))
-                {
-                    SetDevice(InputDevice.WheelAndPedals);
-                    return;
-                }
-            }
-
             if (device is Gamepad && IsDeviceActive(device))
             {
                 SetDevice(InputDevice.Gamepad);
+                return;
+            }
+
+            //only works for the moza R3 wheel
+            if (device.name.Contains("R3") && IsDeviceActive(device))
+            {
+                SetDevice(InputDevice.WheelAndPedals);
                 return;
             }
         }

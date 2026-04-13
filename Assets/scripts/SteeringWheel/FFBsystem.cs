@@ -29,20 +29,25 @@ public class FFBsystem : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //add ground rumble - diffrent for each material
+        //add some kind of limit to ensure that ffb target angle no just force in dir - more realistic
+
+        if (!SessionData.Instance.FFBstate) return;
+
         float force = 0f;
 
         frontLeft.GetGroundHit(out WheelHit flHit);
-        frontRight.GetGroundHit(out WheelHit frHit);
+        frontRight.GetGroundHit(out WheelHit frHit); 
 
         //surface normal - how much ground is tilting left/right under wheel
         //positive = ground slopes right = wheel wants to roll left = push wheel left
         force += flHit.normal.x;
         force += frHit.normal.x;
-        force *= 0.5f;
-
+        force *= -0.5f;
+        
         //Debug.Log(force);
 
-        ffbForce.setMagnitude(Mathf.RoundToInt(force * forceScale));
+        ffbForce.setMagnitude(Mathf.RoundToInt(force * forceScale * SessionData.Instance.FFBstrength));
     }
 
     private void OnDisable()

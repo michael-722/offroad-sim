@@ -13,8 +13,15 @@ public class SteeringWheel : MonoBehaviour
 
     private void Start()
     {
+        maxSteerAngle = SessionData.Instance.FFBlimit;
+
         controller = GetComponentInParent<CarController>();
         baseEuler = steeringWheelMesh.localEulerAngles;
+    }
+
+    public void UpdateSteerLimit()
+    {
+        maxSteerAngle = SessionData.Instance.FFBlimit;
     }
 
     private void Update()

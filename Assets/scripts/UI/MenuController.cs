@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -38,16 +39,6 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Button lessonStartBtn;
     [SerializeField] private TMP_Text lessonStartBtnTxt;
 
-    [Header("settings")]
-    [SerializeField] private Slider masterVolumeSlider;
-    [SerializeField] private Slider musicVolumeSlider;
-    [SerializeField] private Slider sfxVolumeSlider;
-    [SerializeField] private Toggle fullscreenToggle;
-    [SerializeField] private TMP_Dropdown wheelLimitDropdown;
-    [SerializeField] private Toggle FFBtoggle;
-    [SerializeField] private Slider FFBstrengthSlider;
-    [SerializeField] private List<string> FFBLimits;
-
     [Header("loading")]
     [SerializeField] private Slider loadingBar;
     [SerializeField] private TMP_Text loadingLabel;
@@ -71,7 +62,6 @@ public class MenuController : MonoBehaviour
             go.AddComponent<SessionData>();
         }
 
-        InitialiseSettingsPanel();
         ShowPanel(panelHome);
     }
 
@@ -211,54 +201,6 @@ public class MenuController : MonoBehaviour
         if (lessonStartBtnTxt != null) lessonStartBtnTxt.text = lesson.IsComplete ? "Replay" : "Start";
 
         ShowPanel(panelLessonDetail);
-    }
-
-    private void InitialiseSettingsPanel()
-    {
-        if (SessionData.Instance == null) return;
-
-        if (masterVolumeSlider != null)
-        {
-            masterVolumeSlider.value = SessionData.Instance.MasterVolume;
-            masterVolumeSlider.onValueChanged.AddListener(v => SessionData.Instance.MasterVolume = v);
-        }
-
-        if (musicVolumeSlider != null)
-        {
-            musicVolumeSlider.value = SessionData.Instance.MusicVolume;
-            musicVolumeSlider.onValueChanged.AddListener(v => SessionData.Instance.MusicVolume = v);
-        }
-
-        if (sfxVolumeSlider != null)
-        {
-            sfxVolumeSlider.value = SessionData.Instance.SfxVolume;
-            sfxVolumeSlider.onValueChanged.AddListener(v => SessionData.Instance.SfxVolume = v);
-        }
-
-        if (fullscreenToggle != null)
-        {
-            fullscreenToggle.isOn = SessionData.Instance.Fullscreen;
-            fullscreenToggle.onValueChanged.AddListener(v => SessionData.Instance.Fullscreen = v);
-        }
-
-        if (FFBtoggle != null)
-        {
-            FFBtoggle.isOn = SessionData.Instance.FFBstate;
-            FFBtoggle.onValueChanged.AddListener(v => SessionData.Instance.FFBstate = v);
-        }
-
-        if (FFBstrengthSlider != null)
-        {
-            FFBstrengthSlider.value = SessionData.Instance.FFBstrength;
-            FFBstrengthSlider.onValueChanged.AddListener(v => SessionData.Instance.FFBstrength = v);
-        }
-
-        if (wheelLimitDropdown != null)
-        {
-            wheelLimitDropdown.ClearOptions();
-            wheelLimitDropdown.AddOptions(FFBLimits);
-            wheelLimitDropdown.onValueChanged.AddListener(v => SessionData.Instance.FFBlimit = v);
-        }
     }
 
     private void LoadScene(string sceneName)

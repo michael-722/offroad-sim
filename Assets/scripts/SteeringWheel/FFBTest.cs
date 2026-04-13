@@ -91,7 +91,6 @@ public class FFBTest : MonoBehaviour
             Debug.LogError($"createWheelbaseETConstantForce failed: {err}");
             return;
         }
-        
 
         pushForce.setDuration(2000);
 

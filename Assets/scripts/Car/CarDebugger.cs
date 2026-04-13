@@ -45,7 +45,8 @@ public class CarDebugger : MonoBehaviour
             $"BRK: {controller.brakeInput:P0}\n" +
             $"STR: {controller.steerInput:P0}\n" +
             $"TCS: {controller.tcsTorqueFactor}\n" +
-            $"GRAD: {engine.groundSlopeAngle:F1}%\n";
+            $"GRAD: {engine.groundSlopeAngle:F1}%\n" +
+            $"AVG wheel: {controller.GetAverageDrivenWheelRPM():F1}";
 
         GUI.Label(new Rect(15, 15, 200, 150), telemetry, style);
     }
