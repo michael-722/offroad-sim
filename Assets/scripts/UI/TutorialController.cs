@@ -136,7 +136,7 @@ public class TutorialController : MonoBehaviour
         //resetting
         ClearFlags();
         yield return RunStep(
-            Prompt("If you get stuck, you can reset your position.", "R", "gamepad north", "D-pad up === NEED TO CHECK THIS"),
+            Prompt("If you get stuck, you can reset your position.", "R", "gamepad north", "D-pad up"),
             () => resetFired
         );
 

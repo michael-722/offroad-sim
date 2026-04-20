@@ -15,7 +15,8 @@ MonoBehaviour:
   lessonId: basic_03
   title: Gentle Ascents
   bordaUnit: Unit 3 - Gentle Ascents
-  briefingText: 
+  briefingText: Pick a path to ascend the hill with gradual gradient change for the
+    best chance of sucsess.
   assessmentObjective: Climb up the slope without losing control or stalling.
   assessmentTimeLimit: 60
   passingScore: 65

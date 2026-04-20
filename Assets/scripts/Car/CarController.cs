@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 [Serializable]
 public struct SurfaceFriction
@@ -15,8 +16,7 @@ public struct SurfaceFriction
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField] private bool canDrive = false;
-
+    [SerializeField] public bool canDrive = false;
     [SerializeField] private EngineSimulator engine;
     [SerializeField] private WheelData[] wheels;
 
@@ -57,7 +57,9 @@ public class CarController : MonoBehaviour
     private Terrain _terrain;
     private TerrainData _terrainData;
     private Vector3 _terrainPos;
+    private float speedMS;
 
+    public float GetSpeedMS() => speedMS;
     public bool SetCanDrive(bool state) => canDrive = state;
 
     public SurfaceFriction GetWheelSurface(int wheelIndex) => wheelSurfaces[wheelIndex];
@@ -105,7 +107,7 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float speedMS = Vector3.Dot(rb.linearVelocity, transform.forward);
+        speedMS = Vector3.Dot(rb.linearVelocity, transform.forward);
 
         //signed slope angle - positive = uphill negative = downhill
         engine.groundSlopeAngle = 0f;
@@ -141,7 +143,7 @@ public class CarController : MonoBehaviour
                 wheel.collider.steerAngle = steerInput * maxSteerAngle;
 
             //negative bc wheel colliders are backwards in game space
-            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel: 0f;
+            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel / 2: 0f;
             wheel.collider.brakeTorque = brakeInput * brakeForce;
 
             //update friction based on surface and current speed
@@ -149,7 +151,7 @@ public class CarController : MonoBehaviour
         }
 
         //drag
-        //ApplyDrag(speedMS);
+        ApplyDrag(speedMS);
     }
 
     //average RPM across all driven wheels - gives engine a realistic load signal

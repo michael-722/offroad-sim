@@ -1,48 +1,46 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ScrollViewContiller : MonoBehaviour
 {
-    [SerializeField] float scrollStep = 0.15f;
-
-    private ScrollRect _scrollRect;
+    private ScrollRect scrollRect;
 
     private void Awake()
     {
-        _scrollRect = GetComponent<ScrollRect>();
+        scrollRect = GetComponent<ScrollRect>();
     }
 
-    private void OnEnable()
+    //private void OnEnable()
+    //{
+    //    if (InputManager.Instance != null)
+    //    {
+    //        InputManager.Instance.OnCycleCameraEvent += UpdatePos;
+    //        InputManager.Instance.OnResetEvent += UpdatePos;
+    //    }
+    //}
+    
+    //private void OnDisable()
+    //{
+    //    if (InputManager.Instance != null)
+    //    {
+    //        InputManager.Instance.OnCycleCameraEvent -= UpdatePos;
+    //        InputManager.Instance.OnResetEvent -= UpdatePos;
+    //    }
+    //}
+
+    private void UpdatePos()
     {
-        if (InputManager.Instance != null)
-        {
-            InputManager.Instance.OnCycleCameraEvent += ScrollDown;
-            InputManager.Instance.OnResetEvent += ScrollUp;
-        }
+        scrollRect.content.localPosition = GetSnapPos(scrollRect, EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>());
     }
 
-    private void OnDisable()
+    private Vector2 GetSnapPos(ScrollRect rect, RectTransform child)
     {
-        if (InputManager.Instance != null)
-        {
-            InputManager.Instance.OnCycleCameraEvent -= ScrollDown;
-            InputManager.Instance.OnResetEvent -= ScrollUp;
-        }
-    }
-
-    private void ScrollUp()
-    {
-        if (!InputManager.Instance.IsControllerMode) return;
-
-        _scrollRect.verticalNormalizedPosition += scrollStep;
-        _scrollRect.verticalNormalizedPosition = Mathf.Clamp01(_scrollRect.verticalNormalizedPosition);
-    }
-
-    private void ScrollDown()
-    {
-        if (!InputManager.Instance.IsControllerMode) return;
-
-        _scrollRect.verticalNormalizedPosition -= scrollStep;
-        _scrollRect.verticalNormalizedPosition = Mathf.Clamp01(_scrollRect.verticalNormalizedPosition);
+        Canvas.ForceUpdateCanvases();
+        Vector2 viewportLocalPosition = rect.viewport.localPosition;
+        Vector2 childLocalPosition = child.localPosition;
+        Vector2 result = new Vector2(0 - (viewportLocalPosition.x + childLocalPosition.x), 0 - (viewportLocalPosition.y + childLocalPosition.y));
+        return result;
     }
 }

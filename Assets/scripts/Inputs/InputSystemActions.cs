@@ -440,7 +440,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""48ed49e5-f353-4259-b51e-3ce925d7c0d8"",
-                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button4"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

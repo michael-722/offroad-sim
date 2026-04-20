@@ -41,6 +41,8 @@ public class EngineSimulator : MonoBehaviour
     private float shiftTimer = 0f;
     private bool clutchLocked = false;
 
+    private CarController car;
+
     [SerializeField]
     private AnimationCurve torqueCurve = new AnimationCurve(
         new Keyframe(0.00f, 0.30f, 0f, 2.0f),
@@ -50,7 +52,11 @@ public class EngineSimulator : MonoBehaviour
         new Keyframe(0.80f, 0.92f, -0.6f, -0.8f),
         new Keyframe(1.00f, 0.65f, -1.2f, 0f));
 
-    void Start() => currentRPM = idleRPM;
+    private void Start()
+    {
+        car = GetComponent<CarController>();
+        currentRPM = idleRPM;
+    }
 
     public float UpdateEngine(float gasInput, float wheelRPM)
     {
@@ -180,6 +186,7 @@ public class EngineSimulator : MonoBehaviour
 
     public void ShiftUp(float currentWheelRPM)
     {
+        if (!car.canDrive) return;
         if (currentGear >= gearRatios.Length - 1) return;
 
         currentGear++;
@@ -191,6 +198,7 @@ public class EngineSimulator : MonoBehaviour
 
     public void ShiftDown(float currentWheelRPM)
     {
+        if (!car.canDrive) return;
         if (currentGear <= ReverseGear) return;
 
         currentGear--;

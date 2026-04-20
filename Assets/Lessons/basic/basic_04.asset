@@ -15,7 +15,7 @@ MonoBehaviour:
   lessonId: basic_04
   title: Gentle Descents
   bordaUnit: Unit 4 - Gentle Descents
-  briefingText: 
+  briefingText: Pick a path with a shallow gradient that doesnt decend too quickly.
   assessmentObjective: Traverse down the slop without losing control or stalling.
   assessmentTimeLimit: 60
   passingScore: 65
