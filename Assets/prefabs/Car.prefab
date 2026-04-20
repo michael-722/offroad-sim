@@ -2855,6 +2855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbb69846d65b5a4cbefb527da07b059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canDrive: 1
   engine: {fileID: 5981262039117414685}
   wheels:
   - collider: {fileID: 2981396743639271855}
@@ -3090,7 +3091,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontLeft: {fileID: 2981396743639271855}
   frontRight: {fileID: 7670410807019414942}
-  forceScale: 8000
+  forceScale: 10000
+  resistanceScale: 6000
+  rumbleProfiles:
+  - materialTag: Rock
+    frequency: 25
+    amplitude: 4000
+  - materialTag: Dirt
+    frequency: 40
+    amplitude: 2000
+  - materialTag: Mud
+    frequency: 100
+    amplitude: 1000
+  - materialTag: Grass
+    frequency: 25
+    amplitude: 1500
 --- !u!54 &3412811076542621099
 Rigidbody:
   m_ObjectHideFlags: 0

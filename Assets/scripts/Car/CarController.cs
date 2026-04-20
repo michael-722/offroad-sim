@@ -60,6 +60,8 @@ public class CarController : MonoBehaviour
 
     public bool SetCanDrive(bool state) => canDrive = state;
 
+    public SurfaceFriction GetWheelSurface(int wheelIndex) => wheelSurfaces[wheelIndex];
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();

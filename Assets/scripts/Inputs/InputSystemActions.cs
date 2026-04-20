@@ -417,6 +417,17 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f5fa4687-aac8-46e2-8221-c39e8fc1e258"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""794f9a72-225e-425a-b5cb-a308aaf30fa8"",
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
