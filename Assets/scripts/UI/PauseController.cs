@@ -21,6 +21,10 @@ public class PauseController : MonoBehaviour
     [SerializeField] private Slider FFBstrengthSlider;
     [SerializeField] private List<string> FFBLimits;
 
+    public event Action OnOpenClosePauseUI;
+
+    public bool IsPaused => pauseUI.activeInHierarchy || settingsUI.activeInHierarchy;
+
     private void Start()
     {
         InitialiseSettingsPanel();
@@ -36,7 +40,8 @@ public class PauseController : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.Instance.OnPauseEvent -= PauseGame;
+        if (InputManager.Instance != null)
+            InputManager.Instance.OnPauseEvent -= PauseGame;
 
         if (wheelLimitDropdown != null)
             wheelLimitDropdown.onValueChanged.RemoveAllListeners();
@@ -56,7 +61,11 @@ public class PauseController : MonoBehaviour
 
     private void PauseGame()
     {
+        if (IsPaused)
+            return;
+
         Time.timeScale = 0f;
+        OnOpenClosePauseUI?.Invoke();
 
         pauseUI.SetActive(true);
         settingsUI.SetActive(false);
@@ -64,12 +73,14 @@ public class PauseController : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);//main menu
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1.0f;
+        OnOpenClosePauseUI?.Invoke();
 
         pauseUI.SetActive(false);
         settingsUI.SetActive(false);
@@ -77,7 +88,8 @@ public class PauseController : MonoBehaviour
 
     private void InitialiseSettingsPanel()
     {
-        if (SessionData.Instance == null) return;
+        if (SessionData.Instance == null)
+            return;
 
         if (masterVolumeSlider != null)
         {

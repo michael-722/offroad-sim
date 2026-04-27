@@ -93,7 +93,19 @@ public class LessonManager : MonoBehaviour
                 rb.angularVelocity = Vector3.zero;
             }
             car.SetPositionAndRotation(_currentLayout.spawnPoint.position, _currentLayout.spawnPoint.rotation);
+
+            if (lesson.isReverseLesson)
+            {
+                //set only reverse allowed
+            }
+
+            if (lesson.isNightLesson)
+            {
+                //set night and turn on lights - need to add lights
+            }
         }
+
+        
 
         StartCoroutine(LessonRoutine());
     }

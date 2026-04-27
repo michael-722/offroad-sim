@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
   m_Name: standard_03
   m_EditorClassIdentifier: 
-  lessonId: standard_010
+  lessonId: standard_03
   title: Ditches and Rute
   bordaUnit: Unit 10 - Ditches and Rutts
   briefingText: 

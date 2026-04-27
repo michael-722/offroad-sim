@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec4e9ac25efe2004ba207a7bb7229036, type: 3}
   m_Name: standard_02
   m_EditorClassIdentifier: 
-  lessonId: standard_09
+  lessonId: standard_02
   title: Moderate Descents
   bordaUnit: Unit 9 - Moderate Descents
   briefingText: 

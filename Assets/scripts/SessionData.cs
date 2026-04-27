@@ -22,6 +22,11 @@ public class SessionData : MonoBehaviour
     public const string PrefFFBstrength = "Settings_FFBstrength";
     public const string PrefFFBlimit = "Settings_FFBlimit";
 
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     public float MasterVolume
     {
         get => PlayerPrefs.GetFloat(PrefMasterVolume, 1f);

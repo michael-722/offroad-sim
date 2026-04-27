@@ -17,29 +17,36 @@ public class Reset : MonoBehaviour
     private CarController controller;
 
     private Coroutine fadeCoroutine;
+    private PauseController pauseController;
 
     void Start()
     {
-        InputManager.Instance.OnResetEvent += ResetPos;
-
         rb = GetComponent<Rigidbody>();
         controller = GetComponent<CarController>();
+        pauseController = FindAnyObjectByType<PauseController>();
+        confirmText.gameObject.SetActive(false);
+
+        StartCoroutine(DelayedInit());
+    }
+
+    private IEnumerator DelayedInit()
+    {
+        yield return new WaitForSeconds(0.5f);
 
         originalPos = transform.position;
         originalRot = transform.rotation;
 
         updatedPos = originalPos;
         updatedRot = originalRot;
-    }
 
-    void OnDestroy()
-    {
-        if (InputManager.Instance != null)
-            InputManager.Instance.OnResetEvent -= ResetPos;
+        InputManager.Instance.OnResetEvent += ResetPos;
     }
 
     public void ResetPos()
     {
+        if (pauseController != null && pauseController.IsPaused)
+            return;
+
         if (!confirmText.gameObject.activeSelf)
         {
             confirmText.gameObject.SetActive(true);

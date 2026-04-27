@@ -21,24 +21,20 @@ public class BoundryFade : MonoBehaviour
         _renderer = GetComponent<MeshRenderer>();
 
         _instanceMaterial = _renderer.material;
-
-        _colorPropID = _instanceMaterial.HasProperty("_BaseColor") ?
-                       Shader.PropertyToID("_BaseColor") :
-                       Shader.PropertyToID("_Color");
-
+        _colorPropID = _instanceMaterial.HasProperty("_BaseColor") ? Shader.PropertyToID("_BaseColor") : Shader.PropertyToID("_Color");
         _initialColor = _instanceMaterial.GetColor(_colorPropID);
 
-        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
-        if (playerGO != null) _player = playerGO.transform;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+            _player = player.transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (_player == null || _instanceMaterial == null) return;
 
         Vector3 closestPoint = _renderer.bounds.ClosestPoint(_player.position);
         float dist = Vector3.Distance(_player.position, closestPoint);
-
         float alpha = CalculateAlpha(dist);
 
         Color newColor = _initialColor;
@@ -63,18 +59,23 @@ public class BoundryFade : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Renderer r = GetComponent<Renderer>();
-        if (r == null) return;
-        Bounds b = r.bounds;
-        Gizmos.matrix = Matrix4x4.identity;
+        // 1. Set the Gizmo matrix to match the object's transform
+        // This ensures the boxes rotate and scale with the object
+        Gizmos.matrix = transform.localToWorldMatrix;
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(b.center, b.size);
+        // 2. Draw in local space. 
+        // A standard Cube mesh has a local size of (1, 1, 1) and center (0, 0, 0)
+        Vector3 localCenter = Vector3.zero;
+        Vector3 localSize = gameObject.transform.localScale;
 
+        // Fade End (Red) - note we divide by scale to keep the meters consistent
         Gizmos.color = new Color(1f, 0.2f, 0.2f, 0.9f);
-        Gizmos.DrawWireCube(b.center, b.size + Vector3.one * (fadeEndDistance * 2f));
+        Vector3 endOffset = new Vector3(fadeEndDistance * 2 / transform.lossyScale.x, fadeEndDistance * 2 / transform.lossyScale.y, fadeEndDistance * 2 / transform.lossyScale.z);
+        Gizmos.DrawWireCube(localCenter, localSize + endOffset);
 
+        // Fade Start (Yellow)
         Gizmos.color = new Color(1f, 0.8f, 0f, 0.6f);
-        Gizmos.DrawWireCube(b.center, b.size + Vector3.one * (fadeStartDistance * 2f));
+        Vector3 startOffset = new Vector3(fadeStartDistance * 2 / transform.lossyScale.x, fadeStartDistance * 2 / transform.lossyScale.y, fadeStartDistance * 2 / transform.lossyScale.z);
+        Gizmos.DrawWireCube(localCenter, localSize + startOffset);
     }
 }

@@ -43,8 +43,10 @@ public class LessonBoundary : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!_armed) return;
-        if (!other.CompareTag("Player")) return;
+        if (!_armed)
+            return;
+        if (!other.CompareTag("Player"))
+            return;
 
         _outside = true;
         _outsideTimer = 0f;
@@ -53,8 +55,10 @@ public class LessonBoundary : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //player returned inside grace period - cancel the fail countdown
-        if (!_armed) return;
-        if (!other.CompareTag("Player")) return;
+        if (!_armed)
+            return;
+        if (!other.CompareTag("Player"))
+            return;
 
         _outside = false;
         _outsideTimer = 0f;

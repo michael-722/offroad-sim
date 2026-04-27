@@ -19,8 +19,8 @@ public class Lesson : ScriptableObject
     [Header("unlock")]
     public Lesson[] prerequisites;
 
-    [Header("lesson icon - optional")]
-    public Sprite icon;
+    public bool isNightLesson = false;
+    public bool isReverseLesson = false;
 
     public string PrefKeyCompleted => $"SkillLesson_{lessonId}_Completed";
     public string PrefKeyBestScore => $"SkillLesson_{lessonId}_BestScore";

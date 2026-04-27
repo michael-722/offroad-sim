@@ -58,6 +58,7 @@ public class CarController : MonoBehaviour
     private TerrainData _terrainData;
     private Vector3 _terrainPos;
     private float speedMS;
+    private float prevSpeedMS;
 
     public float GetSpeedMS() => speedMS;
     public bool SetCanDrive(bool state) => canDrive = state;
@@ -111,25 +112,18 @@ public class CarController : MonoBehaviour
 
         //signed slope angle - positive = uphill negative = downhill
         engine.groundSlopeAngle = 0f;
-        foreach (var w in wheels)
-        {
-            WheelHit hit;
-            if (w.collider.GetGroundHit(out hit))
-            {
-                float unsignedAngle = Vector3.Angle(hit.normal, Vector3.up);
-                float sign = -Mathf.Sign(transform.forward.y);
-                engine.groundSlopeAngle = Mathf.Lerp(engine.groundSlopeAngle,
-                    unsignedAngle * sign, Time.fixedDeltaTime * 10f);
-                break;
-            }
-        }
+        engine.groundSlopeAngle = transform.eulerAngles.x > 180f ? transform.eulerAngles.x - 360f : transform.eulerAngles.x;
 
         //engine updating
         float avgDrivenWheelRPM = GetAverageDrivenWheelRPM();
         float totalOutputTorque = engine.UpdateEngine(canDrive ? gasInput : 0, avgDrivenWheelRPM);
 
+        if (!canDrive)
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+
         //traction control
-        if (tcsEnabled) ApplyTractionControl(speedMS);
+        if (tcsEnabled)
+            ApplyTractionControl(speedMS);
 
         //distribute torque to drive wheels
         float torquePerWheel = activeWheels > 0 ? (totalOutputTorque / activeWheels) * tcsTorqueFactor : 0f;
@@ -143,7 +137,7 @@ public class CarController : MonoBehaviour
                 wheel.collider.steerAngle = steerInput * maxSteerAngle;
 
             //negative bc wheel colliders are backwards in game space
-            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel / 2: 0f;
+            wheel.collider.motorTorque = IsWheelInDrivetrain(wheel) ? -torquePerWheel : 0f;
             wheel.collider.brakeTorque = brakeInput * brakeForce;
 
             //update friction based on surface and current speed
@@ -169,8 +163,7 @@ public class CarController : MonoBehaviour
         }
 
         float raw = count > 0 ? total / count : 0f;
-        smoothedWheelRPM = Mathf.Lerp(smoothedWheelRPM, raw, Time.fixedDeltaTime * 10f);
-        return smoothedWheelRPM;
+        return raw;
     }
 
     private SurfaceFriction GetSurfaceProfile(WheelCollider wheel)
@@ -264,7 +257,11 @@ public class CarController : MonoBehaviour
 
     private void ApplyTractionControl(float carSpeedMS)
     {
-        if (!tcsEnabled || Mathf.Abs(carSpeedMS) < tcsMinSpeed)
+        float acceleration = (carSpeedMS - prevSpeedMS) / Time.fixedDeltaTime;
+        prevSpeedMS = carSpeedMS;
+
+        bool tooSlowOrAccelerating = Mathf.Abs(carSpeedMS) < tcsMinSpeed || acceleration > 0.5f;
+        if (!tcsEnabled || tooSlowOrAccelerating)
         {
             tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, 1f, Time.fixedDeltaTime * tcsResponseSpeed);
             return;
@@ -280,11 +277,20 @@ public class CarController : MonoBehaviour
 
             float slip = Mathf.Abs(hit.forwardSlip);
             float limit = wheelSurfaces[i].tcsSlipLimit;
-            float ratio = Mathf.Clamp01((slip - limit) / limit);
+
+            float slopeBonus = Mathf.Abs(engine.groundSlopeAngle) / 45f;
+            float adjustedLimit = limit * (1f + slopeBonus * 2f); // widened from 1.5 to 2
+
+            float ratio = Mathf.Clamp01((slip - adjustedLimit) / adjustedLimit);
             if (ratio > worstSlipRatio) worstSlipRatio = ratio;
         }
 
         float targetFactor = 1f - worstSlipRatio;
+        float slopeFactor = Mathf.Clamp01(Mathf.Abs(engine.groundSlopeAngle) / 45f);
+        float minTorqueFactor = Mathf.Lerp(0.3f, 0.75f, slopeFactor); // raised floor
+
+        targetFactor = Mathf.Max(targetFactor, minTorqueFactor);
+
         tcsTorqueFactor = Mathf.Lerp(tcsTorqueFactor, targetFactor, Time.fixedDeltaTime * tcsResponseSpeed);
         tcsTorqueFactor = Mathf.Clamp01(tcsTorqueFactor);
     }

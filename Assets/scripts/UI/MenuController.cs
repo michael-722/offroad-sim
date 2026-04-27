@@ -212,8 +212,10 @@ public class MenuController : MonoBehaviour
     {
         ShowPanel(panelLoading);
 
-        if (loadingLabel != null) loadingLabel.text = $"Loading {sceneName}...";
-        if (loadingBar != null) loadingBar.value = 0f;
+        if (loadingLabel != null)
+            loadingLabel.text = $"Loading {sceneName}...";
+        if (loadingBar != null)
+            loadingBar.value = 0f;
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
@@ -223,12 +225,14 @@ public class MenuController : MonoBehaviour
         {
             float progress = Mathf.Clamp01(op.progress / 0.9f);
 
-            if (loadingBar != null) loadingBar.value = progress;
+            if (loadingBar != null)
+                loadingBar.value = progress;
 
             //activate once fully loaded
             if (op.progress >= 0.9f)
             {
-                if (loadingBar != null) loadingBar.value = 1f;
+                if (loadingBar != null)
+                    loadingBar.value = 1f;
                 yield return new WaitForSeconds(0.45f);
                 op.allowSceneActivation = true;
             }
