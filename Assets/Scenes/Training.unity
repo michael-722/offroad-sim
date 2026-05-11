@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.2964
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 0.81225246, g: 0.81225246, b: 0.81225246, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -141963,31 +141963,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.03
+      value: -2.97
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8600002
+      value: 2.06
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.3
+      value: 9.3
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.009158665
+      value: 0.4681633
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0004942385
+      value: 0.15354256
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9985052
+      value: 0.8268654
       objectReference: {fileID: 0}
     - target: {fileID: 3213885316633868430, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.05388337
+      value: -0.2711853
       objectReference: {fileID: 0}
     - target: {fileID: 3412811076542621099, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_Mass
@@ -142015,7 +142015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7007185146223985702, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: near clip plane
-      value: 0.01
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7007185146223985702, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_BackGroundColor.b
@@ -142028,6 +142028,22 @@ PrefabInstance:
     - target: {fileID: 7007185146223985702, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_BackGroundColor.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: rumbleProfiles.Array.data[0].frequency
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: rumbleProfiles.Array.data[1].frequency
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: rumbleProfiles.Array.data[2].frequency
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: rumbleProfiles.Array.data[3].frequency
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7670410807019414942, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness

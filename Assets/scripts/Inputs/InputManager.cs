@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -69,7 +70,8 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
 
     private void HandleInputSourceChange(object obj, InputActionChange change)
     {
-        if (change != InputActionChange.ActionPerformed) return;
+        if (change != InputActionChange.ActionPerformed)
+            return;
 
         var inputAction = (InputAction)obj;
         var control = inputAction.activeControl;
@@ -144,7 +146,7 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
         }
 
         OnInputSourceChanged?.Invoke(IsControllerMode);
-        //Debug.Log($"switched to: {(IsControllerMode ? "controller/wheel" : "mk")}");
+        Debug.Log($"switched to: {(IsControllerMode ? "controller/wheel" : "mk")}");
     }
 
     public void OnAccelerate(InputAction.CallbackContext context)

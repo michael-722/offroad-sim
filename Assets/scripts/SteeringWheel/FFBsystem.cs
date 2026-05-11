@@ -1,7 +1,6 @@
 using mozaAPI;
 using System;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using static mozaAPI.mozaAPI;
 
@@ -49,7 +48,8 @@ public class FFBSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!SessionData.Instance.FFBstate) return;
+        if (!SessionData.Instance.FFBstate)
+            return;
 
         //surface normal force
         frontLeft.GetGroundHit(out WheelHit flHit);
