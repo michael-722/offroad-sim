@@ -15,10 +15,11 @@ MonoBehaviour:
   lessonId: standard_04
   title: Side Slope
   bordaUnit: Unit 11 - Side Slope
-  briefingText: 
-  assessmentObjective: Traverse along and up the slope without losing control, slipping
-    or stalling.
+  briefingText: Make your way to the goal, watch out for the surface youre on they
+    have diffrent traction.
+  assessmentObjective: Traverse along and up the slope without losing control.
   assessmentTimeLimit: 90
   passingScore: 75
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

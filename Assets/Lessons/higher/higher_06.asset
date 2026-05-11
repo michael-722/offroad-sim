@@ -15,10 +15,11 @@ MonoBehaviour:
   lessonId: higher_06
   title: Extreme Side Slope
   bordaUnit: Unit 17 - Extreme Side Slopes and Rollover Awareness
-  briefingText: 
-  assessmentObjective: Traverse along and up the slope without losing control, rolling
-    over or stalling.
+  briefingText: Stop you might want to reverse and asses the situation first. keeping
+    hight is key as gravity is against you.
+  assessmentObjective: Traverse along and up the slope without losing control.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

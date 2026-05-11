@@ -15,9 +15,11 @@ MonoBehaviour:
   lessonId: higher_05
   title: Reverse Ascents
   bordaUnit: Unit 16 - Reverse Ascents
-  briefingText: 
+  briefingText: Reversing makes it harder to see, use the spotter side cams to get
+    a better view - careful as you wont be able to see your dashboard.
   assessmentObjective: 'Reverse up the slope without losing control or stalling. '
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 1

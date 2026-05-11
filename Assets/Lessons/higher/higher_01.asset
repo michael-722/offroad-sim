@@ -15,10 +15,11 @@ MonoBehaviour:
   lessonId: higher_01
   title: Steep Ascents
   bordaUnit: Unit 12 - Steep Ascents with traction loss
-  briefingText: 
+  briefingText: Route picking is paramount, find a route and keep momentum you may
+    not be able to regain it.
   assessmentObjective: Climb the slope without losing control or stalling.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
-  shortDescription: 
+  isNightLesson: 0
+  isReverseLesson: 0

@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: higher_04
   m_EditorClassIdentifier: 
   lessonId: higher_04
-  title: Self Recovery
+  title: Multiple objectives
   bordaUnit: Unit 15 - Self Recovery Techniques
-  briefingText: 
+  briefingText: Plan a way to collect all obectives in the set time, power management
+    on steep incines is important.
   assessmentObjective: Recover from being stuck.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

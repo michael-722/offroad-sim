@@ -15,10 +15,12 @@ MonoBehaviour:
   lessonId: higher_03
   title: Failed Ascent Recovery
   bordaUnit: Unit 14 - Failed Ascent Recovery
-  briefingText: 
+  briefingText: When recovering use the breaks to slow yourself, turning around will
+    also give you a better view.
   assessmentObjective: Reverse back down from the starting point on the slope without
     losing control.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

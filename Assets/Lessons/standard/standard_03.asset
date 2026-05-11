@@ -15,9 +15,10 @@ MonoBehaviour:
   lessonId: standard_03
   title: Ditches and Rute
   bordaUnit: Unit 10 - Ditches and Rutts
-  briefingText: 
+  briefingText: Find a way to the goal, momentum will help.
   assessmentObjective: Cross all the ditches and rutts without getting stuck.
   assessmentTimeLimit: 120
   passingScore: 75
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

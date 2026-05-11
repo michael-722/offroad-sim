@@ -15,9 +15,10 @@ MonoBehaviour:
   lessonId: standard_02
   title: Moderate Descents
   bordaUnit: Unit 9 - Moderate Descents
-  briefingText: 
+  briefingText: Pick a path that decends slowly, diagonal paths are less extreme
   assessmentObjective: Descent the slope without losing control or stalling
   assessmentTimeLimit: 90
   passingScore: 75
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

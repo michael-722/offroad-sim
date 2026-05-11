@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -40,6 +41,8 @@ public class LessonManager : MonoBehaviour
     public UnityEvent<LessonResult> OnLessonComplete;
     public UnityEvent<SkillTier> OnTierUnlocked;
 
+    [SerializeField] private Material skybox;
+
     private Lesson _currentLesson;
     private LessonLayout _currentLayout;
     private LessonPhase _phase = LessonPhase.Inactive;
@@ -51,8 +54,13 @@ public class LessonManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else { Destroy(gameObject); return; }
+        if (Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     public void StartLesson(Lesson lesson)
@@ -95,17 +103,16 @@ public class LessonManager : MonoBehaviour
             car.SetPositionAndRotation(_currentLayout.spawnPoint.position, _currentLayout.spawnPoint.rotation);
 
             if (lesson.isReverseLesson)
-            {
-                //set only reverse allowed
-            }
+                car.GetComponent<EngineSimulator>().isReverseOnly = true;
 
             if (lesson.isNightLesson)
             {
-                //set night and turn on lights - need to add lights
+                FindAnyObjectByType<Light>().gameObject.SetActive(false);
+                car.gameObject.GetComponent<carLights>().enableLights();
+                RenderSettings.skybox = skybox;
+                DynamicGI.UpdateEnvironment();
             }
         }
-
-        
 
         StartCoroutine(LessonRoutine());
     }

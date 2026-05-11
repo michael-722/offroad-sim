@@ -1282,8 +1282,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2974001119445808591}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15354249, y: 0.82686543, z: -0.2711853, w: -0.4681632}
-  m_LocalPosition: {x: 4.0299997, y: 2.06, z: 9.3}
+  m_LocalRotation: {x: 0.15354256, y: 0.8268654, z: -0.2711853, w: 0.4681633}
+  m_LocalPosition: {x: -30.2, y: 13.7, z: 91.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2145,13 +2145,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5007766511310755189}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07490909, y: 0.008046048, z: -0.03272753, w: 0.9966207}
-  m_LocalPosition: {x: -0.0028000474, y: 1.8403006, z: -0.13949966}
+  m_LocalRotation: {x: -0.025238022, y: 0.011996454, z: -0.0040453365, w: 0.9996013}
+  m_LocalPosition: {x: -0.041000366, y: 1.6890001, z: -0.117996216}
   m_LocalScale: {x: -0.024872862, y: 0.010445781, z: 0.019681362}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3299658914186005540}
-  m_LocalEulerAnglesHint: {x: -74.847, y: 143.383, z: -142.408}
+  m_LocalEulerAnglesHint: {x: -177.113, y: 181.388, z: -180.499}
 --- !u!20 &1744460642392343096
 Camera:
   m_ObjectHideFlags: 0
@@ -2968,6 +2968,7 @@ MonoBehaviour:
   isStalled: 0
   groundSlopeAngle: 0
   outputWheelTorque: 0
+  isReverseOnly: 0
   torqueCurve:
     serializedVersion: 2
     m_Curve:

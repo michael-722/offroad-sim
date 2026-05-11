@@ -15,9 +15,10 @@ MonoBehaviour:
   lessonId: higher_07
   title: Night Driving
   bordaUnit: Unit 18 - Reduced Visibility and Night Driving
-  briefingText: 
+  briefingText: navigate with only your headlights to guide you.
   assessmentObjective: Complete the set out course.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 1
+  isReverseLesson: 0

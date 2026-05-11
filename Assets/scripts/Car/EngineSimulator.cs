@@ -33,6 +33,8 @@ public class EngineSimulator : MonoBehaviour
     [HideInInspector] public float groundSlopeAngle = 0f;
     [HideInInspector] public float outputWheelTorque = 0f;
 
+    [HideInInspector] public bool isReverseOnly = false;
+
     private const int NeutralGear = -1;
     private const int ReverseGear = -2;
 
@@ -179,15 +181,22 @@ public class EngineSimulator : MonoBehaviour
 
     private float GetCurrentGearRatio()
     {
-        if (currentGear == NeutralGear) return 0f;
-        if (currentGear == ReverseGear) return reverseRatio;
+        if (currentGear == NeutralGear)
+            return 0f;
+        if (currentGear == ReverseGear)
+            return reverseRatio;
+
         return gearRatios[Mathf.Clamp(currentGear, 0, gearRatios.Length - 1)];
     }
 
     public void ShiftUp(float currentWheelRPM)
     {
-        if (!car.canDrive) return;
-        if (currentGear >= gearRatios.Length - 1) return;
+        if (!car.canDrive)
+            return;
+        if (currentGear >= gearRatios.Length - 1)
+            return;
+        if (isReverseOnly && currentGear == NeutralGear)
+            return;
 
         currentGear++;
         shiftTimer = 0.25f;

@@ -15,9 +15,10 @@ MonoBehaviour:
   lessonId: higher_02
   title: Steep Descents
   bordaUnit: Unit 13 - Steep Descents
-  briefingText: 
+  briefingText: Take your time and plan a way down before commiting to a decent.
   assessmentObjective: Descent the slope without losing control or stalling.
   assessmentTimeLimit: 90
   passingScore: 80
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0
