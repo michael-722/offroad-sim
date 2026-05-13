@@ -26,6 +26,9 @@ public class SteeringWheel : MonoBehaviour
 
     private void Update()
     {
+        //if ()
+        //    return;
+
         float targetAngle = controller.steerInput * maxSteerAngle;
         smoothedAngle = Mathf.Lerp(smoothedAngle, targetAngle, Time.deltaTime * smoothSpeed);
 

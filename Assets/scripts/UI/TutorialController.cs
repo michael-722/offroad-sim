@@ -71,7 +71,8 @@ public class TutorialController : MonoBehaviour
 
     private void Update()
     {
-        if (!tutorialActive) return;
+        if (!tutorialActive)
+            return;
 
         DetectDeviceFromCurrentInput();
     }
@@ -186,10 +187,7 @@ public class TutorialController : MonoBehaviour
         yield return new WaitForSeconds(stepCompletePause);
     }
 
-    private string Prompt(string baseMessage,
-                          string kbmHint,
-                          string gamepadHint,
-                          string wheelHint)
+    private string Prompt(string baseMessage, string kbmHint, string gamepadHint, string wheelHint)
     {
         string hint = _currentDevice switch
         {

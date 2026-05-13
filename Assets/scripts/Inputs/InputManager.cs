@@ -45,13 +45,13 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
     private void OnEnable()
     {
         _controls.Enable();
-        InputSystem.onActionChange += HandleInputSourceChange;
+        //InputSystem.onActionChange += HandleInputSourceChange;
     }
 
     private void OnDisable()
     {
         _controls.Disable();
-        InputSystem.onActionChange -= HandleInputSourceChange;
+        //InputSystem.onActionChange -= HandleInputSourceChange;
     }
 
     private void OnDestroy()
@@ -131,19 +131,6 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
     private void SetInputMode(bool controllerMode)
     {
         IsControllerMode = controllerMode;
-
-        if (IsControllerMode)
-        {
-            //controller/wheel mode
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;//hides cursor
-        }
-        else
-        {
-            //mk mode
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;//shows cursor
-        }
 
         OnInputSourceChanged?.Invoke(IsControllerMode);
         Debug.Log($"switched to: {(IsControllerMode ? "controller/wheel" : "mk")}");

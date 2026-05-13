@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.InputSystem;
 
 public class PauseController : MonoBehaviour
 {

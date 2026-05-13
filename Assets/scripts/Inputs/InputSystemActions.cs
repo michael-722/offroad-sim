@@ -212,7 +212,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""Accelerate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -245,7 +245,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/rz"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -267,7 +267,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/stick/x"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": "";Joystick;Gamepad"",
                     ""action"": ""Steering"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -330,10 +330,10 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9b4495ee-c892-4bf2-b04a-443feb8d3ed9"",
-                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button7"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button4"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""CycleCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -363,10 +363,10 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8e0b1724-65e0-4eff-bb23-9135c48e16c6"",
-                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button8"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button22"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""CameraLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -396,7 +396,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""571f70c2-20cc-4ad1-bcb2-c95adbd81c85"",
-                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button6"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button35"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -440,10 +440,10 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""48ed49e5-f353-4259-b51e-3ce925d7c0d8"",
-                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button5"",
+                    ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button23"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -476,7 +476,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button37"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -509,7 +509,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button14"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""GearUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -542,7 +542,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::Gudsen R3 Racing Wheel and Pedals>/button13"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Joystick"",
                     ""action"": ""GearDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -575,7 +575,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""15cef263-9014-4fd5-94d9-4e4a6234a6ef"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -977,7 +977,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""193b8d3d-a070-424a-bd5d-4e160fe44801"",
+                    ""id"": ""fb1d27c9-b317-43b0-a685-d160a33fbcfb"",
                     ""path"": ""<Joystick>/trigger"",
                     ""interactions"": """",
                     ""processors"": """",
