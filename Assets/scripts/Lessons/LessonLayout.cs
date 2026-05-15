@@ -8,7 +8,6 @@ public class LessonLayout : MonoBehaviour
 
     [HideInInspector] public List<LessonGoal> goals = new List<LessonGoal>();
     [HideInInspector] public List<LessonBoundary> boundaries = new List<LessonBoundary>();
-
     private void Awake()
     {
         GetComponentsInChildren(true, goals);
@@ -30,9 +29,13 @@ public class LessonLayout : MonoBehaviour
 
     public void Deactivate()
     {
+        if (lessonId == LessonManager.Instance._currentLayout.lessonId)
+            return;
+
         foreach (var g in goals) g.Disarm();
         foreach (var b in boundaries) b.Disarm();
 
         gameObject.SetActive(false);
+        Destroy(this.gameObject);
     }
 }

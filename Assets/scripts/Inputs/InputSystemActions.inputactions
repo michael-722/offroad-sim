@@ -181,7 +181,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/stick/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick;Gamepad",
+                    "groups": ";Joystick",
                     "action": "Steering",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -244,7 +244,7 @@
                 {
                     "name": "",
                     "id": "9b4495ee-c892-4bf2-b04a-443feb8d3ed9",
-                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button4",
+                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/trigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Joystick",
@@ -277,6 +277,17 @@
                 {
                     "name": "",
                     "id": "8e0b1724-65e0-4eff-bb23-9135c48e16c6",
+                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick",
+                    "action": "CameraLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4931667-09b3-491a-8891-85e405ba4128",
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button22",
                     "interactions": "",
                     "processors": "",
@@ -298,8 +309,19 @@
                 },
                 {
                     "name": "",
+                    "id": "f3832c6b-bca9-4714-96c9-44b5de2c84b9",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "CameraRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7a85452d-35d1-407d-83eb-56e09373a1ee",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -313,7 +335,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button35",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Joystick",
                     "action": "CameraRight",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -354,7 +376,7 @@
                 {
                     "name": "",
                     "id": "48ed49e5-f353-4259-b51e-3ce925d7c0d8",
-                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button23",
+                    "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Joystick",
@@ -826,7 +848,7 @@
                 {
                     "name": "2D Vector",
                     "id": "415183b3-b39b-4f0d-af95-9de927168ee5",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -840,7 +862,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button5",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick",
+                    "groups": "",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -851,7 +873,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button7",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick",
+                    "groups": "",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -862,7 +884,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button8",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick",
+                    "groups": "",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -873,7 +895,7 @@
                     "path": "<HID::Gudsen R3 Racing Wheel and Pedals>/button6",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick",
+                    "groups": "",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true

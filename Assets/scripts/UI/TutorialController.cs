@@ -32,11 +32,14 @@ public class TutorialController : MonoBehaviour
     private bool cameraLeft;
     private bool cameraRight;
 
+    private PauseController pauseCtrler;
+
     private void OnEnable()
     {
         InputSystem.onDeviceChange += OnDeviceChanged;
 
-        if (InputManager.Instance == null) return;
+        if (InputManager.Instance == null)
+            return;
         InputManager.Instance.OnAccelerateEvent += v => lastThrottle = v;
         InputManager.Instance.OnBrakeEvent += v => lastBrake = v;
         InputManager.Instance.OnSteeringEvent += v => lastSteer = v;
@@ -52,7 +55,8 @@ public class TutorialController : MonoBehaviour
     {
         InputSystem.onDeviceChange -= OnDeviceChanged;
 
-        if (InputManager.Instance == null) return;
+        if (InputManager.Instance == null)
+            return;
         InputManager.Instance.OnAccelerateEvent -= v => lastThrottle = v;
         InputManager.Instance.OnBrakeEvent -= v => lastBrake = v;
         InputManager.Instance.OnSteeringEvent -= v => lastSteer = v;
@@ -66,6 +70,7 @@ public class TutorialController : MonoBehaviour
 
     private void Start()
     {
+        pauseCtrler = FindAnyObjectByType<PauseController>();
         StartTutorial();
     }
 
@@ -79,7 +84,8 @@ public class TutorialController : MonoBehaviour
 
     public void StartTutorial()
     {
-        if (tutorialActive) return;
+        if (tutorialActive)
+            return;
         tutorialActive = true;
         tutorialPanel.SetActive(true);
         StartCoroutine(TutorialRoutine());
@@ -137,28 +143,28 @@ public class TutorialController : MonoBehaviour
         //resetting
         ClearFlags();
         yield return RunStep(
-            Prompt("If you get stuck, you can reset your position.", "R", "gamepad north", "D-pad up"),
+            Prompt("If you get stuck, you can reset your position.", "R", "gamepad north", "Y"),
             () => resetFired
         );
 
         //camera left
         ClearFlags();
         yield return RunStep(
-            Prompt("Look left", "X", "D-pad left", "D-pad left"),
+            Prompt("Look left", "X", "D-pad left", "X/RSB"),
             () => cameraLeft
             );
 
         //camera right
         ClearFlags();
         yield return RunStep(
-            Prompt("Look left", "C", "D-pad right", "D-pad right"),
+            Prompt("Look left", "C", "D-pad right", "B/LSB"),
             () => cameraRight
             );
 
         //camera mode
         ClearFlags();
         yield return RunStep(
-            Prompt("Cycle through camera views.", "Z", "D-pad down", "D-pad down"),
+            Prompt("Cycle through camera views.", "Z", "D-pad down", "A"),
             () => cameraCycleFired
         );
 
@@ -182,7 +188,13 @@ public class TutorialController : MonoBehaviour
         SetInstructionText(message);
 
         while (!completionCondition())
+        {
+            //wait while paused
+            while (pauseCtrler.IsPaused)
+                yield return null;
+
             yield return null;
+        }
 
         yield return new WaitForSeconds(stepCompletePause);
     }

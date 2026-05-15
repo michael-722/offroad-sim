@@ -44,7 +44,7 @@ public class LessonManager : MonoBehaviour
     [SerializeField] private Material skybox;
 
     private Lesson _currentLesson;
-    private LessonLayout _currentLayout;
+    public LessonLayout _currentLayout;
     private LessonPhase _phase = LessonPhase.Inactive;
     private float _assessmentTimer;
     private float _assessmentScore;

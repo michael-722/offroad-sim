@@ -65,6 +65,8 @@ public class PauseController : MonoBehaviour
         if (IsPaused)
             return;
 
+        Application.targetFrameRate = 400;
+
         Time.timeScale = 0f;
         OnOpenClosePauseUI?.Invoke();
 
@@ -74,12 +76,14 @@ public class PauseController : MonoBehaviour
 
     public void MainMenu()
     {
+        Application.targetFrameRate = 60;
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
 
     public void ResumeGame()
     {
+        Application.targetFrameRate = 60;
         Time.timeScale = 1.0f;
         OnOpenClosePauseUI?.Invoke();
 

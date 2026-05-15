@@ -4412,7 +4412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7081796733674082582, guid: 5705a5e0ba9537b488a2649cd5556e5d, type: 3}
       propertyPath: m_TreeDistance
-      value: 450
+      value: 704
       objectReference: {fileID: 0}
     - target: {fileID: 7081796733674082582, guid: 5705a5e0ba9537b488a2649cd5556e5d, type: 3}
       propertyPath: m_SplatMapDistance
@@ -4424,7 +4424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7081796733674082582, guid: 5705a5e0ba9537b488a2649cd5556e5d, type: 3}
       propertyPath: m_DetailObjectDensity
-      value: 0.354
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 7081796733674082582, guid: 5705a5e0ba9537b488a2649cd5556e5d, type: 3}
       propertyPath: m_DrawTreesAndFoliage

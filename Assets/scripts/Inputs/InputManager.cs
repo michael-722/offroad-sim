@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
 {
     public static InputManager Instance;
 
-    private @InputSystemActions _controls;
+    public @InputSystemActions _controls;
 
     public bool IsControllerMode { get; private set; }
     public event Action<bool> OnInputSourceChanged;
@@ -44,13 +44,15 @@ public class InputManager : MonoBehaviour, InputSystemActions.IPlayerActions
 
     private void OnEnable()
     {
-        _controls.Enable();
+        _controls.Player.Enable();
+        _controls.UI.Disable();
         //InputSystem.onActionChange += HandleInputSourceChange;
     }
 
     private void OnDisable()
     {
         _controls.Disable();
+        _controls.UI.Disable();
         //InputSystem.onActionChange -= HandleInputSourceChange;
     }
 
