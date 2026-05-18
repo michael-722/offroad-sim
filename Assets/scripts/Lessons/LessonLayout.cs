@@ -32,10 +32,10 @@ public class LessonLayout : MonoBehaviour
         if (lessonId == LessonManager.Instance._currentLayout.lessonId)
             return;
 
-        foreach (var g in goals) g.Disarm();
-        foreach (var b in boundaries) b.Disarm();
-
-        gameObject.SetActive(false);
-        Destroy(this.gameObject);
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child != transform)
+                Destroy(child.gameObject);
+        }
     }
 }

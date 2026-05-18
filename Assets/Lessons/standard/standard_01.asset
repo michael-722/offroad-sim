@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Moderate Ascents
   bordaUnit: Unit 8 - Moderate Ascents
   briefingText: Be mindful of you rpms - if youre red lineing it youre losing power!
-  assessmentObjective: Climb the slope without stalling or losing control.
+  assessmentObjective: Climb the slope without stalling or losing control, find a
+    safe route up.
   assessmentTimeLimit: 90
   passingScore: 75
   prerequisites: []

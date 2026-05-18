@@ -17,7 +17,9 @@ MonoBehaviour:
   bordaUnit: Unit 5 - Traction Awareness
   briefingText: Drive across the diffrent surfaces while not acceleraring too hard.
   assessmentObjective: Navigate a mix of surfaces while causing minimal loss of traction.
-  assessmentTimeLimit: 120
+  assessmentTimeLimit: 110
   passingScore: 65
-  prerequisites: []
-  icon: {fileID: 0}
+  prerequisites:
+  - {fileID: 11400000, guid: f0d289f20c8f4ec4a91f18f2acfb14a5, type: 2}
+  isNightLesson: 0
+  isReverseLesson: 0

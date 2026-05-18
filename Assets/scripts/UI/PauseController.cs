@@ -117,7 +117,16 @@ public class PauseController : MonoBehaviour
         if (fullscreenToggle != null)
         {
             fullscreenToggle.isOn = SessionData.Instance.Fullscreen;
-            fullscreenToggle.onValueChanged.AddListener(v => SessionData.Instance.Fullscreen = v);
+            fullscreenToggle.onValueChanged.AddListener(v =>
+            {
+                SessionData.Instance.Fullscreen = v;
+
+                if (v)
+                    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, FullScreenMode.FullScreenWindow);
+                else
+                    Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+            });
+
         }
 
         if (FFBtoggle != null)

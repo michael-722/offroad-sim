@@ -17,8 +17,11 @@ MonoBehaviour:
   bordaUnit: Unit 3 - Gentle Ascents
   briefingText: Pick a path to ascend the hill with gradual gradient change for the
     best chance of sucsess.
-  assessmentObjective: Climb up the slope without losing control or stalling.
+  assessmentObjective: Climb up the slope without losing control or stalling, dont
+    sit on the redline this loses power.
   assessmentTimeLimit: 60
   passingScore: 65
-  prerequisites: []
-  icon: {fileID: 0}
+  prerequisites:
+  - {fileID: 11400000, guid: f06edaef167b30a41b1ae11ce2f87f6b, type: 2}
+  isNightLesson: 0
+  isReverseLesson: 0

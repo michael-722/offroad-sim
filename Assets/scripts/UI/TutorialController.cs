@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.SceneManagement;
 
 public class TutorialController : MonoBehaviour
 {
@@ -172,7 +173,7 @@ public class TutorialController : MonoBehaviour
         ClearFlags();
         float freeDriveTimer = 0f;
         yield return RunStep(
-            "Good work! Have a free drive to get comfortable. The tutorial will end shortly.",
+            "Good work! Practice more in freeplay to get comfortable. The tutorial will end shortly.",
             () =>
             {
                 freeDriveTimer += Time.deltaTime;
@@ -217,7 +218,7 @@ public class TutorialController : MonoBehaviour
     {
         foreach (var device in InputSystem.devices)
         {
-            Debug.Log(device.name);
+            //Debug.Log(device.name);
             if (device is Keyboard || device is Mouse)
             {
                 if (IsKeyboardOrMouseActive())
@@ -295,6 +296,6 @@ public class TutorialController : MonoBehaviour
 
         tutorialPanel.SetActive(false);
 
-        //return to menu
+        SceneManager.LoadScene("MainMenu");
     }
 }

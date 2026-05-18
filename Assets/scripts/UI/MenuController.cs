@@ -166,7 +166,7 @@ public class MenuController : MonoBehaviour
             if (row.statusText != null)
             {
                 if (!unlocked)
-                    row.statusText.text = "<color=#888888>Locked</color>";
+                    row.statusText.text = "<color=#FF1B00>Locked</color>";
                 else if (lesson.IsComplete)
                     row.statusText.text = $"Best Score: {lesson.BestScore:F0}";
                 else

@@ -17,8 +17,9 @@ MonoBehaviour:
   bordaUnit: Unit 17 - Extreme Side Slopes and Rollover Awareness
   briefingText: Stop you might want to reverse and asses the situation first. keeping
     hight is key as gravity is against you.
-  assessmentObjective: Traverse along and up the slope without losing control.
-  assessmentTimeLimit: 90
+  assessmentObjective: Traverse along and up the slope without losing control, keeping
+    traction and height is key.
+  assessmentTimeLimit: 85
   passingScore: 80
   prerequisites: []
   isNightLesson: 0

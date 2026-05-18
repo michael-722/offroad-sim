@@ -80,7 +80,6 @@ public class LessonGoal : MonoBehaviour
         if (!_hasSlowedDown &!_isToolSlow)
         {
             _errorTxt.text = $"Failed!\nYou didnt slow down to or below {targetSlowSpeed} inside the zone.";
-            HandleFailure();
         }
         else
             _isToolSlow = false;
@@ -99,7 +98,6 @@ public class LessonGoal : MonoBehaviour
 
     private void HandleFailure()
     {
-        _triggered = true;
         _errorTxt.gameObject.SetActive(true);
 
         StartCoroutine(FadeAndDismiss());

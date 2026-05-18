@@ -16,9 +16,9 @@ MonoBehaviour:
   title: Vehicle Familiarisation
   bordaUnit: Unit 1 - Vehicle Familiarisation and Controls
   briefingText: 'Stay within the cones and reach the goal. '
-  assessmentObjective: Complete a slow lap of the marked course staying within the
-    cones.
+  assessmentObjective: Navigate to the goal staying within the cones.
   assessmentTimeLimit: 0
   passingScore: 60
   prerequisites: []
-  icon: {fileID: 0}
+  isNightLesson: 0
+  isReverseLesson: 0

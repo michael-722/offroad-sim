@@ -17,8 +17,9 @@ MonoBehaviour:
   bordaUnit: Unit 15 - Self Recovery Techniques
   briefingText: Plan a way to collect all obectives in the set time, power management
     on steep incines is important.
-  assessmentObjective: Recover from being stuck.
-  assessmentTimeLimit: 90
+  assessmentObjective: Collect all goals and make it to the top, pick your ascent
+    path carefully.
+  assessmentTimeLimit: 60
   passingScore: 80
   prerequisites: []
   isNightLesson: 0

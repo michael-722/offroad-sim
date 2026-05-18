@@ -16,8 +16,11 @@ MonoBehaviour:
   title: Hazard Reading
   bordaUnit: Unit 6 - Basic Hazard Reading
   briefingText: Pick a path through the hazards planning ahaed is important.
-  assessmentObjective: 'Navigate the obstacles without becoming stuck. '
-  assessmentTimeLimit: 120
+  assessmentObjective: 'Navigate the obstacles without becoming stuck, pick a safe
+    path. '
+  assessmentTimeLimit: 110
   passingScore: 65
-  prerequisites: []
-  icon: {fileID: 0}
+  prerequisites:
+  - {fileID: 11400000, guid: 40c25987426f515469257790efb926f8, type: 2}
+  isNightLesson: 0
+  isReverseLesson: 0
