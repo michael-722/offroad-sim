@@ -15,8 +15,8 @@ MonoBehaviour:
   lessonId: basic_07
   title: Emergency Stop
   bordaUnit: Unit 7 - Emergency Stop
-  briefingText: Youll need to accellerate to X speed before coming to a complete
-    stop within the goal areas.
+  briefingText: Youll need to accellerate to 30 before coming to a complete stop
+    within the goal areas.
   assessmentObjective: Perform three emergancy stops in the goals after getting up
     to speed.
   assessmentTimeLimit: 60

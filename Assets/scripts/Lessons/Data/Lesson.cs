@@ -22,6 +22,8 @@ public class Lesson : ScriptableObject
     public bool isNightLesson = false;
     public bool isReverseLesson = false;
 
+    public float bestTime = float.MaxValue;
+
     public string PrefKeyCompleted => $"SkillLesson_{lessonId}_Completed";
     public string PrefKeyBestScore => $"SkillLesson_{lessonId}_BestScore";
     public string PrefKeyAttempts => $"SkillLesson_{lessonId}_Attempts";

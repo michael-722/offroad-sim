@@ -31366,7 +31366,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -66.9, y: -10.74, z: -104}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 5, y: 5, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 594951794}
@@ -31437,7 +31437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSlowSpeed: 0
-  entrySpeedRequired: 40
+  entrySpeedRequired: 30
   _errorTxt: {fileID: 3238785812365186471}
   fadeDuration: 3
   scoreValue: 33
@@ -49229,13 +49229,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675200215}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7, y: -8, z: -31}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalRotation: {x: -0, y: 0.29150096, z: -0, w: 0.95657057}
+  m_LocalPosition: {x: -8.6, y: -10.47, z: -50.5}
+  m_LocalScale: {x: 5, y: 5, z: 15.085055}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 594951794}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 33.896, z: 0}
 --- !u!23 &675200217
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -49302,7 +49302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSlowSpeed: 0
-  entrySpeedRequired: 40
+  entrySpeedRequired: 30
   _errorTxt: {fileID: 3238785812365186471}
   fadeDuration: 3
   scoreValue: 33
@@ -93842,7 +93842,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.9, y: -10.74, z: -139.7}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 15, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 594951794}
@@ -93913,7 +93913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSlowSpeed: 0
-  entrySpeedRequired: 40
+  entrySpeedRequired: 30
   _errorTxt: {fileID: 3238785812365186471}
   fadeDuration: 3
   scoreValue: 34
@@ -132832,6 +132832,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   skybox: {fileID: 2100000, guid: f0d7dc82f1fe0924bb0ff61302f6f54c, type: 2}
+  _currentLayout: {fileID: 0}
 --- !u!4 &1821639511
 Transform:
   m_ObjectHideFlags: 0
@@ -142044,6 +142045,18 @@ PrefabInstance:
     - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: forceScale
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: resistanceScale
+      value: 6000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
+      propertyPath: rumbleSpeedLimit
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7453099281580045557, guid: e6303d8f61b6bcf4ea11cd72795c54bf, type: 3}
       propertyPath: rumbleProfiles.Array.data[0].frequency
