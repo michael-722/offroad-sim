@@ -158,7 +158,7 @@ public class TutorialController : MonoBehaviour
         //camera right
         ClearFlags();
         yield return RunStep(
-            Prompt("Look left", "C", "D-pad right", "B/LSB"),
+            Prompt("Look right", "C", "D-pad right", "B/LSB"),
             () => cameraRight
             );
 
